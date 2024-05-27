@@ -3,9 +3,9 @@
 1. Install the LR library `pip install lowerated`
 2. Print out the list of entities
     ```python
-    from lowerated import entities
+    from lowerated.rate import entities
 
-    print(entities)
+    print(entities())
     ```
 3. Select the entity of your choice and check its attributes.
     ```python
