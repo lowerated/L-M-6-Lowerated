@@ -11,4 +11,4 @@
 10. Scraping Book Reviews (with their original ratings)
 11. Scraping e-com products' Reviews (with their star ratings)
 12. Compare All ratings (IMDB, GoodReads, Amazon Ratings) with Lowerated's rating.
-
+13. Design a Generalized Recommendation System take takes in any information about user, and all the items that can be suggested and returns a sorted list of items based on user's information (rating algorithm is also used).
