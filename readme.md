@@ -1,5 +1,7 @@
 # Lowerated's Rating Algorithm
 
+![Logo](./media/logos/main-logo-black-background.jpeg)
+
 ### The best way to rate anything.
 
 - An algorithm that provides accurate ratings for any entity.
@@ -31,44 +33,16 @@ We gather reviews from multiple critics and users. Our AI extracts information f
 
 Each attribute is given a percentage value from 0-100%, reflecting its presence in the movie.
 
-We have identified key attributes for multiple entities, detailed in the listed in [entities & attributes](./docs/entities_attributes.md)
+We have identified key attributes for multiple entities, detailed in the listed in [entities & attributes](./docs/rate/entities_attributes.md)
 
 
 ## Can we add more attributes?
 Yes, 7 is the standard for all the default entities given, you can create your own entities and assign them as many attributes you want.
 
 ## How do I use it?
-1. Install the LR library `pip install lowerated`
-2. Print out the list of entities
-    ```python
-    from lowerated import entities
+Check Out the steps to use Lowerated [here](./docs/rate/how_to_use.md)
 
-    print(entities)
-    ```
-3. Select the entity of your choice and check its attributes.
-    ```python
-    from lowerated import find_attributes
-
-    print(find_attributes('movie'))
-    ```
-4. If you want to create your custom entity, you can create it like this
-    ```python
-    from lowerated import create_entity
-
-    your_entity = create_entity(
-        entity='custom_entity', 
-        attributes=['attribute1', 'attribute2',         'attribute3']
-    )
-    ```
-5. To generate ratings based on your reviews:
-    ```python
-    from lowerated import generate_ratings
-
-    reviews = [
-        'The movie was visually stunning, but the plot was lacking.',
-        'The characters were well-developed, and the story was engaging.'
-    ]
-
-    ratings = generate_ratings('movie', reviews)
-    print(ratings)
-    ```
+### Lisence
+[Apache 2.0](./LICENSE)
+ 
+Copyright (2024) FACT-RATED MEDIA (PVT-LTD)
