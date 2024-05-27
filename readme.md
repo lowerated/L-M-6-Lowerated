@@ -1,8 +1,12 @@
 # Lowerated's Rating Algorithm
 
-![Logo](./media/logos/main-logo-black-background.jpeg)
+<p align="center">
+    <img src="./media/logos/main-logo-black-background.jpeg" alt="Logo" width="200">
+</p>
 
-### The best way to rate anything.
+<h3 align="center">
+    <strong>The Best Way to Rate  & Recommend Anything</strong>
+</h3>
 
 - An algorithm that provides accurate ratings for any entity.
 - Uses diverse sources: reviews, links, documents, and other resources.
