@@ -21,21 +21,40 @@ class Entity:
         return f"Entity: {self.attributes}"
 
     def get_attributes(self):
-
+        """
+        Returns attributes of the current entity.
+        """
         return self.attributes
 
     def get_entities():
-
+        """
+        Returns all available default entities.
+        """
         return Entity.entities.keys()
+    
+    def get_entity_attributes(name: str) -> List[str]:
+        """
+        Returns attributes of the entity mentioned in the argument
+        """
+        entity = Entity.entities.get(name, None)
+        if entity:
+            return list(entity.attributes)
+        else:
+            return None
 
-    def get_entity(name):
+    def rate(reviews: List[str] = None, file_path: str = None) -> None:
+        """
+        Using Reviews directly given in a list of strings, or a path to csv or xlsx file with reviews listed in one column,
+        Rate the Attributes of the Entities in the Reviews, then average out one value for each attribute.
 
-        return Entity.entities[name]
+        Args:
+            reviews: list of textual reviews
+            file_path: path to csv or xlsx file with reviews listed in one column. If more than one column, then each column is treated as an attribute.
 
-    def get_entity_attributes(name):
+        Returns:
+            None
+        """
 
-        return Entity.entities[name].attributes
-
-    def rate(reviews: List[str] = None, links: List[str] = None, file_path: str = None) -> None:
-
+        if reviews is None and file_path is None:
+            pass
         pass
