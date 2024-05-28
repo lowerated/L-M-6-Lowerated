@@ -1,6 +1,6 @@
 ## Things To Do
 
-1. Adding Custom Entity without Effecting the Default Ones.
+1. ~~Adding Custom Entity without Effecting the Default Ones.~~
 2. Extract Info from reviews i.e. Sentiments From Text against attributes.
 4. Assigning Weights to Critic's Review.
 5. Testing Better Models for Sentiments.
