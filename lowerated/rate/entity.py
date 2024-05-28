@@ -20,5 +20,22 @@ class Entity:
     def __str__(self):
         return f"Entity: {self.attributes}"
 
-    def rate(reviews: List[str]):
+    def get_attributes(self):
+
+        return self.attributes
+
+    def get_entities():
+
+        return Entity.entities.keys()
+
+    def get_entity(name):
+
+        return Entity.entities[name]
+
+    def get_entity_attributes(name):
+
+        return Entity.entities[name].attributes
+
+    def rate(reviews: List[str] = None, links: List[str] = None, file_path: str = None) -> None:
+
         pass
