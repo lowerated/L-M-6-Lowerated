@@ -81,6 +81,7 @@ class Entity:
 
         elif download_link:
             # download file from link
+            print("downloaded")
             pass
 
             probabilites = get_probabilities(
