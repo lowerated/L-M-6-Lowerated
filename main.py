@@ -1,3 +1,2 @@
 import numpy as np
-
-print("Hello Lowerated!")
+from lowerated.rate.entity import Entity

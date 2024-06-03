@@ -35,7 +35,7 @@ def find_attributes(entity: str) -> List[str]:
         return attributes
 
 
-def get_probabilities(text: str, attributes: List[str]) -> Dict:
+def get_probabilities(reviews: List[str], entity: str, attributes: List[str], key: str = None) -> Dict:
     """
     Returns the Probabilities of the Attributes in the Text
 
@@ -46,3 +46,6 @@ def get_probabilities(text: str, attributes: List[str]) -> Dict:
     Return:
         Dict: Probabilities of the Attributes {"attribute_1":0.3,"attribute_2":0.7}
     """
+
+    if key is None:
+        return None
