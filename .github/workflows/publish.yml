@@ -24,15 +24,15 @@ jobs:
         id: check_version
         run: |
           echo "Checking if the current version exists on PyPI..."
-          python check_version.py
-          echo "VERSION_EXISTS=${{ env.VERSION_EXISTS }}" >> $GITHUB_ENV
+          VERSION_EXISTS=$(python check_version.py | grep VERSION_EXISTS | cut -d '=' -f 2)
+          echo "VERSION_EXISTS=$VERSION_EXISTS" >> $GITHUB_ENV
 
       - name: Build package
-        if: env.VERSION_EXISTS != 'true'
+        if: env.VERSION_EXISTS == 'false'
         run: python setup.py sdist bdist_wheel
 
       - name: Publish package
-        if: env.VERSION_EXISTS != 'true'
+        if: env.VERSION_EXISTS == 'false'
         env:
           TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}

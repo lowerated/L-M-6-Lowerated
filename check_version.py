@@ -1,6 +1,5 @@
 import requests
 import re
-import os
 
 
 def get_version():
@@ -20,8 +19,6 @@ response = requests.get(f"https://pypi.org/pypi/{package_name}/json")
 data = response.json()
 
 if version in data["releases"]:
-    print(f"Version {version} of {package_name} already exists on PyPI.")
-    os.environ['VERSION_EXISTS'] = 'true'
+    print(f"VERSION_EXISTS=true")
 else:
-    print(f"Version {version} of {package_name} does not exist on PyPI.")
-    os.environ['VERSION_EXISTS'] = 'false'
+    print(f"VERSION_EXISTS=false")
