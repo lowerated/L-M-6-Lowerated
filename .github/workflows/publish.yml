@@ -3,7 +3,7 @@ name: Publish Python Package
 on:
   push:
     branches:
-      - deploy
+      - main
 
 jobs:
   build:
@@ -18,12 +18,20 @@ jobs:
           python-version: "3.x"
 
       - name: Install dependencies
-        run: pip install setuptools wheel twine
+        run: pip install setuptools wheel twine requests
+
+      - name: Check if version exists on PyPI
+        run: |
+          echo "Checking if the current version exists on PyPI..."
+          python check_version.py
+        continue-on-error: true
 
       - name: Build package
+        if: success()
         run: python setup.py sdist bdist_wheel
 
       - name: Publish package
+        if: success()
         env:
           TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
