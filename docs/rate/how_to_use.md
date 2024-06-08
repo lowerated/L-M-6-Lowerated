@@ -6,34 +6,45 @@ The `Entity` class is designed to process and rate attributes of entities based 
 
 Before using the `Entity` class, ensure you have the required libraries installed:
 
-- `pandas`
-- `requests`
+- `lowerated`
 
 You can install these libraries using pip:
 
 ```bash
-pip install pandas requests
+pip install lowerated
 ```
 
 ## Setup
 
-1. Ensure you have an `entities.json` file located at `./lowerated/rate/entities.json` with the structure defining default entities and their attributes.
-
-2. Import the necessary modules and classes:
+1. Import the necessary modules and classes:
 
 ```python
-import json
-from typing import List
-import pandas as pd
-from lowerated.rate.utils import get_probabilities
-import requests
+from lowerated.rate import Entity
+from lowerated.rate.utils import entities, find_attributes
 ```
 
 3. Define the `Entity` class with its methods.
 
 ## Usage
 
-### Initializing an Entity
+### See Available Entities & their Attributes
+
+Get a list of available entities and their attributes:
+
+```python
+entities = entities()
+print(entities)
+```
+
+To see a specific entity's attributes, use the code below:
+
+```python
+entity_name = "Product"
+attributes = find_attributes(entity_name)
+print(attributes)
+```
+
+### Initializing an Available Entity or Creating Custom Entity
 
 Create an instance of the `Entity` class by specifying the entity name and optionally its attributes:
 
