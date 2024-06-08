@@ -2,6 +2,7 @@ import openai
 import numpy as np
 import json
 from typing import List, Dict
+from openai import OpenAI
 
 
 def entities() -> List[str]:
@@ -67,18 +68,19 @@ def get_probabilities(reviews: List[str], entity: str, attributes: List[str], ke
         raise ValueError("OpenAI API key is required")
 
     # Set the OpenAI API key
-    openai.api_key = key
+    client = OpenAI()
 
     # Join all reviews into a single string for context
     reviews_text = "\n".join(reviews)
 
-    # Prepare the prompt for the GPT model
-    prompt = f"""Analyze the following reviews for the entity '{entity}'
-     and provide probabilities for the following attributes a
-     s a JSON object with values ranging from 0 to 1: {', '.join(attributes)}.
+    # Prepare the prompt template
+    prompt_template = f"""Analyze the following reviews for the entity '{entity}' and provide probabilities for the following attributes as a JSON object with values ranging from 0 to 1: {', '.join(attributes)}.
 
-     Reviews: {reviews_text}
-    """
+    YOU must give me response like this:
+    {{"attribute_1":0.3,"attribute_2":0.7}}
+
+    Reviews: """
+
     try:
         probabilities = {attribute: 0.0 for attribute in attributes}
 
@@ -86,14 +88,13 @@ def get_probabilities(reviews: List[str], entity: str, attributes: List[str], ke
         review_chunks = chunk_text(text=reviews_text, chunk_size=4000)
 
         for chunk in review_chunks:
+            prompt = prompt_template + chunk
             # Call the OpenAI GPT-3.5-turbo model
-            response = openai.ChatCompletion.create(
+            response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": "You are a helpful assistant."},
-                    {"role": "user", "content": f"""Analyze the following reviews for the entity '{
-                        entity}' and provide probabilities for the following attributes as a JSON object with values ranging from 0 to 1: {', '.join(attributes)}. Reviews: {chunk}
-                        """}
+                    {"role": "user", "content": prompt}
                 ],
                 max_tokens=150,
                 n=1,
@@ -102,8 +103,9 @@ def get_probabilities(reviews: List[str], entity: str, attributes: List[str], ke
             )
 
             # Extract the generated text from the response
-            generated_text = response['choices'][0]['message']['content'].strip(
-            )
+            generated_text = response.choices[0].message.content
+
+            print("generated text: ", generated_text)
 
             # Parse the generated text as JSON
             chunk_probabilities = json.loads(generated_text)
@@ -122,15 +124,3 @@ def get_probabilities(reviews: List[str], entity: str, attributes: List[str], ke
     except Exception as e:
         print(f"Error in getting probabilities: {e}")
         return {}
-
-
-# Example usage
-if __name__ == "__main__":
-    reviews = ["Great product!", "Not worth the price.", "Excellent quality."]
-    entity = "Product"
-    attributes = ["Quality", "Value for Money", "Durability"]
-    openai_key = "your-openai-api-key"
-
-    probabilities = get_probabilities(
-        reviews=reviews, entity=entity, attributes=attributes, key=openai_key)
-    print(probabilities)

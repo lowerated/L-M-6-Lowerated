@@ -128,5 +128,3 @@ class Entity:
         else:
             print("No reviews to process.")
             return
-
-
