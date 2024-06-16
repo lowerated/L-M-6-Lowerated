@@ -1,8 +1,18 @@
-import openai
-import numpy as np
 import json
 from typing import List, Dict
 from openai import OpenAI
+
+
+def download_reviews():
+    pass
+
+
+def bring_web_reviews():
+    pass
+
+
+def read_reviews():
+    pass
 
 
 def entities() -> List[str]:
@@ -74,10 +84,14 @@ def get_probabilities(reviews: List[str], entity: str, attributes: List[str], ke
     reviews_text = "\n".join(reviews)
 
     # Prepare the prompt template
-    prompt_template = f"""Analyze the following reviews for the entity '{entity}' and provide probabilities for the following attributes as a JSON object with values ranging from 0 to 1: {', '.join(attributes)}.
+    prompt_template = f"""Analyze the following reviews for the entity '{entity}' and provide probabilities for the following attributes as a JSON object with values ranging from -1 to 1: {', '.join(attributes)}.
+
+    -1 means, sentiment of that attibute is negative
+    1 means, sentiment of that attibute is positive
+    0 means an attribute isn't talked about or the sentiment is neutral.
 
     YOU must give me response like this:
-    {{"attribute_1":0.3,"attribute_2":0.7}}
+    {{"attribute_1":-0.3, "attribute_2":0.7}}
 
     Reviews: """
 
@@ -89,6 +103,7 @@ def get_probabilities(reviews: List[str], entity: str, attributes: List[str], ke
 
         for chunk in review_chunks:
             prompt = prompt_template + chunk
+
             # Call the OpenAI GPT-3.5-turbo model
             response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
@@ -105,7 +120,7 @@ def get_probabilities(reviews: List[str], entity: str, attributes: List[str], ke
             # Extract the generated text from the response
             generated_text = response.choices[0].message.content
 
-            print("generated text: ", generated_text)
+            # print("generated text: ", generated_text)
 
             # Parse the generated text as JSON
             chunk_probabilities = json.loads(generated_text)

@@ -128,3 +128,6 @@ class Entity:
         else:
             print("No reviews to process.")
             return
+
+    def get_reviews_insights():
+        pass
