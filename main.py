@@ -1,4 +1,5 @@
 from lowerated.rate.entity import Entity
+from lowerated.rate.reviews_extraction import bring_web_reviews
 from dotenv import load_dotenv
 import os
 

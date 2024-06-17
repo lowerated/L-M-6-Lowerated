@@ -56,8 +56,10 @@ class Entity:
 
         Args:
             reviews: list of textual reviews
+            review_column: helps in specifying the review column.
+            range: if the reviews are too many and the cost is too much, you can test the rating on limited reviews.
             file_path: path to csv, xlsx, or txt file with reviews listed in one column. If more than one column, then each column is treated as an attribute.
-            download_link: URL to download the file
+            download_link: URL to download the file.
             openai_key: OpenAI API key (costs: {--} per 1000 Reviews)
 
         Returns:
@@ -72,8 +74,9 @@ class Entity:
                                         "support": 0.9
                            }
         """
-        reviews = read_reviews(file_path=file_path,
-                               download_link=download_link, review_column=review_column)
+        if reviews is None:
+            reviews = read_reviews(file_path=file_path,
+                                   download_link=download_link, review_column=review_column)
 
         if reviews:
             probabilities = get_probabilities(

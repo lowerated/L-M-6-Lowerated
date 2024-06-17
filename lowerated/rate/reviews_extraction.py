@@ -1,3 +1,4 @@
+from bs4 import BeautifulSoup
 import openai
 import numpy as np
 import json
@@ -19,12 +20,37 @@ def reviews_from_df(df, review_column):
     return reviews
 
 
-def bring_web_reviews(keywords: str):
+def bring_web_reviews(keywords: List[str]):
     """
-    Using Keywords given by user, this function extracts content (reviews, comments, etc) from all over the web related to those keywords 
+    Using keywords given by user, this function extracts content (reviews, comments, etc) from all over the web related to those keywords 
     """
+    # Prepare search query
+    search_query = keywords.replace(' ', '+')
+    url = f"https://www.google.com/search?q={search_query}+reviews"
 
-    pass
+    # Set headers to mimic a browser visit
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+
+    # Send a request to Google search
+    response = requests.get(url, headers=headers)
+
+    if response.status_code != 200:
+        print(f"Failed to retrieve content: {response.status_code}")
+        return []
+
+    # Parse the search results
+    soup = BeautifulSoup(response.text, 'html.parser')
+    review_snippets = []
+
+    # Extract snippets that look like reviews
+    for div in soup.find_all('div', class_='BVG0Nb'):
+        snippet = div.get_text()
+        if snippet:
+            review_snippets.append(snippet)
+
+    return review_snippets
 
 
 def read_reviews(file_path: str = None, download_link: str = None, review_column: str = None):
@@ -34,7 +60,7 @@ def read_reviews(file_path: str = None, download_link: str = None, review_column
         2. Downloadable link
     """
 
-    if reviews is None and file_path is None and download_link is None:
+    if file_path is None and download_link is None:
         print("No Reviews Given")
         return
 
