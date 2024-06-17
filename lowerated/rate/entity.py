@@ -1,7 +1,8 @@
 import json
 from typing import List
 import pandas as pd
-from lowerated.rate.utils import get_probabilities, read_reviews
+from lowerated.rate.utils import get_probabilities
+from lowerated.rate.reviews_extraction import read_reviews
 import requests
 
 
@@ -48,7 +49,7 @@ class Entity:
         else:
             return None
 
-    def rate(self, reviews: List[str] = None, file_path: str = None, download_link: str = None, openai_key: str = None):
+    def rate(self, reviews: List[str] = None, file_path: str = None, download_link: str = None, review_column: str = None, openai_key: str = None):
         """
         Using Reviews directly given in a list of strings, or a path to csv, xlsx, or txt file with reviews listed in one column,
         Rate the Attributes of the Entities in the Reviews, then average out one value for each attribute.
@@ -72,7 +73,7 @@ class Entity:
                            }
         """
         reviews = read_reviews(file_path=file_path,
-                               download_link=download_link)
+                               download_link=download_link, review_column=review_column)
 
         if reviews:
             probabilities = get_probabilities(
