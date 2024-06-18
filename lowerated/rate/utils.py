@@ -127,3 +127,47 @@ def get_probabilities(reviews: List[str], entity: str, attributes: List[str], ke
     except Exception as e:
         print(f"Error in getting probabilities: {e}")
         return {}
+
+
+def calculate_cost(reviews: List[str] = None, model: str = "gpt-3.5-turbo-0125") -> float:
+    """
+        Calculate how much it would cost to get the rating from reviews.
+    """
+
+    # Define the pricing per model
+    pricing = {
+        "gpt-3.5-turbo-0125": {
+            "input_cost_per_million": 0.50,
+            "output_cost_per_million": 1.50
+        }
+    }
+
+    # Get the pricing for the specified model
+    if model not in pricing:
+        raise ValueError(
+            "Model not recognized. Please use a valid model name.")
+
+    input_cost_per_million = pricing[model]["input_cost_per_million"]
+    output_cost_per_million = pricing[model]["output_cost_per_million"]
+
+    # Convert the list of reviews to a single string
+    if isinstance(reviews, list):
+        text = " ".join(reviews)
+    else:
+        raise ValueError("Input must be a list of reviews.")
+
+        # Calculate the number of input tokens in the text
+    # Here, we assume 1 token is roughly 4 characters
+    num_input_tokens = len(text) / 4  # This is a rough estimation
+
+    # The number of output tokens is fixed (200 characters / 4 characters per token)
+    num_output_tokens = 200 / 4
+
+    # Calculate the cost for input and output tokens
+    input_cost = (num_input_tokens / 1_000_000) * input_cost_per_million
+    output_cost = (num_output_tokens / 1_000_000) * output_cost_per_million
+
+    # Total cost is the sum of input and output costs
+    total_cost = input_cost + output_cost
+
+    return total_cost

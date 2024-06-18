@@ -86,5 +86,9 @@ class Entity:
             print("No reviews to process.")
             return
 
-    def get_reviews_insights():
-        pass
+    def calculate_cost(reviews: List[str] = None) -> float:
+
+        total_cost = calculate_cost_from_reviews(
+            reviews, model="gpt-3.5-turbo-0125")
+
+        return total_cost

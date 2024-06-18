@@ -1,5 +1,5 @@
 from lowerated.rate.entity import Entity
-from lowerated.rate.reviews_extraction import bring_web_reviews
+from lowerated.rate.utils import calculate_cost
 from dotenv import load_dotenv
 import os
 
@@ -18,6 +18,10 @@ if __name__ == "__main__":
         "yo who designed the set, that was really good",
         "such stories are rare to find"
     ]
+
+    # get costs
+    costs = calculate_cost(reviews=reviews)
+    print(f"To rate the reviews, the algorithm will cost: {costs} $")
 
     entity = Entity(name="Movie")
     attributes = entity.get_attributes()
