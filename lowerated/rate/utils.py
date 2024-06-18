@@ -1,7 +1,6 @@
-import openai
-import numpy as np
 import json
 from typing import List, Dict
+from openai import OpenAI
 
 
 def entities() -> List[str]:
@@ -67,18 +66,23 @@ def get_probabilities(reviews: List[str], entity: str, attributes: List[str], ke
         raise ValueError("OpenAI API key is required")
 
     # Set the OpenAI API key
-    openai.api_key = key
+    client = OpenAI()
 
     # Join all reviews into a single string for context
     reviews_text = "\n".join(reviews)
 
-    # Prepare the prompt for the GPT model
-    prompt = f"""Analyze the following reviews for the entity '{entity}'
-     and provide probabilities for the following attributes a
-     s a JSON object with values ranging from 0 to 1: {', '.join(attributes)}.
+    # Prepare the prompt template
+    prompt_template = f"""Analyze the following reviews for the entity '{entity}' and provide probabilities for the following attributes as a JSON object with values ranging from -1 to 1: {', '.join(attributes)}.
 
-     Reviews: {reviews_text}
-    """
+    -1 means, sentiment of that attibute is negative
+    1 means, sentiment of that attibute is positive
+    0 means an attribute isn't talked about or the sentiment is neutral.
+
+    YOU must give me response like this:
+    {{"attribute_1":-0.3, "attribute_2":0.7}}
+
+    Reviews: """
+
     try:
         probabilities = {attribute: 0.0 for attribute in attributes}
 
@@ -86,14 +90,14 @@ def get_probabilities(reviews: List[str], entity: str, attributes: List[str], ke
         review_chunks = chunk_text(text=reviews_text, chunk_size=4000)
 
         for chunk in review_chunks:
+            prompt = prompt_template + chunk
+
             # Call the OpenAI GPT-3.5-turbo model
-            response = openai.ChatCompletion.create(
+            response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": "You are a helpful assistant."},
-                    {"role": "user", "content": f"""Analyze the following reviews for the entity '{
-                        entity}' and provide probabilities for the following attributes as a JSON object with values ranging from 0 to 1: {', '.join(attributes)}. Reviews: {chunk}
-                        """}
+                    {"role": "user", "content": prompt}
                 ],
                 max_tokens=150,
                 n=1,
@@ -102,8 +106,9 @@ def get_probabilities(reviews: List[str], entity: str, attributes: List[str], ke
             )
 
             # Extract the generated text from the response
-            generated_text = response['choices'][0]['message']['content'].strip(
-            )
+            generated_text = response.choices[0].message.content
+
+            # print("generated text: ", generated_text)
 
             # Parse the generated text as JSON
             chunk_probabilities = json.loads(generated_text)
@@ -124,13 +129,45 @@ def get_probabilities(reviews: List[str], entity: str, attributes: List[str], ke
         return {}
 
 
-# Example usage
-if __name__ == "__main__":
-    reviews = ["Great product!", "Not worth the price.", "Excellent quality."]
-    entity = "Product"
-    attributes = ["Quality", "Value for Money", "Durability"]
-    openai_key = "your-openai-api-key"
+def calculate_cost(reviews: List[str] = None, model: str = "gpt-3.5-turbo-0125") -> float:
+    """
+        Calculate how much it would cost to get the rating from reviews.
+    """
 
-    probabilities = get_probabilities(
-        reviews=reviews, entity=entity, attributes=attributes, key=openai_key)
-    print(probabilities)
+    # Define the pricing per model
+    pricing = {
+        "gpt-3.5-turbo-0125": {
+            "input_cost_per_million": 0.50,
+            "output_cost_per_million": 1.50
+        }
+    }
+
+    # Get the pricing for the specified model
+    if model not in pricing:
+        raise ValueError(
+            "Model not recognized. Please use a valid model name.")
+
+    input_cost_per_million = pricing[model]["input_cost_per_million"]
+    output_cost_per_million = pricing[model]["output_cost_per_million"]
+
+    # Convert the list of reviews to a single string
+    if isinstance(reviews, list):
+        text = " ".join(reviews)
+    else:
+        raise ValueError("Input must be a list of reviews.")
+
+        # Calculate the number of input tokens in the text
+    # Here, we assume 1 token is roughly 4 characters
+    num_input_tokens = len(text) / 4  # This is a rough estimation
+
+    # The number of output tokens is fixed (200 characters / 4 characters per token)
+    num_output_tokens = 200 / 4
+
+    # Calculate the cost for input and output tokens
+    input_cost = (num_input_tokens / 1_000_000) * input_cost_per_million
+    output_cost = (num_output_tokens / 1_000_000) * output_cost_per_million
+
+    # Total cost is the sum of input and output costs
+    total_cost = input_cost + output_cost
+
+    return total_cost

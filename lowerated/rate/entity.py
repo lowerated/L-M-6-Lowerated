@@ -2,6 +2,7 @@ import json
 from typing import List
 import pandas as pd
 from lowerated.rate.utils import get_probabilities
+from lowerated.rate.reviews_extraction import read_reviews
 import requests
 
 
@@ -48,15 +49,17 @@ class Entity:
         else:
             return None
 
-    def rate(self, reviews: List[str] = None, file_path: str = None, download_link: str = None, openai_key: str = None):
+    def rate(self, reviews: List[str] = None, file_path: str = None, download_link: str = None, review_column: str = None, openai_key: str = None):
         """
         Using Reviews directly given in a list of strings, or a path to csv, xlsx, or txt file with reviews listed in one column,
         Rate the Attributes of the Entities in the Reviews, then average out one value for each attribute.
 
         Args:
             reviews: list of textual reviews
+            review_column: helps in specifying the review column.
+            range: if the reviews are too many and the cost is too much, you can test the rating on limited reviews.
             file_path: path to csv, xlsx, or txt file with reviews listed in one column. If more than one column, then each column is treated as an attribute.
-            download_link: URL to download the file
+            download_link: URL to download the file.
             openai_key: OpenAI API key (costs: {--} per 1000 Reviews)
 
         Returns:
@@ -71,55 +74,9 @@ class Entity:
                                         "support": 0.9
                            }
         """
-        if reviews is None and file_path is None and download_link is None:
-            print("No Reviews Given")
-            return
-
-        if download_link:
-            try:
-                response = requests.get(download_link)
-                response.raise_for_status()  # Check if the download was successful
-
-                content_disposition = response.headers.get(
-                    'content-disposition')
-                if content_disposition:
-                    filename = content_disposition.split(
-                        'filename=')[-1].strip('"')
-                else:
-                    filename = download_link.split('/')[-1]
-
-                if filename.endswith('.csv'):
-                    df = pd.read_csv(pd.compat.StringIO(response.text))
-                    reviews = df.iloc[:, 0].tolist()
-                elif filename.endswith('.xlsx'):
-                    df = pd.read_excel(pd.compat.BytesIO(response.content))
-                    reviews = df.iloc[:, 0].tolist()
-                elif filename.endswith('.txt'):
-                    reviews = response.text.splitlines()
-                    # Remove any extra whitespace
-                    reviews = [review.strip() for review in reviews]
-                else:
-                    print("Unsupported file format")
-                    return
-            except requests.exceptions.RequestException as e:
-                print(f"Failed to download the file: {e}")
-                return
-
-        elif file_path:
-            if file_path.endswith('.csv'):
-                df = pd.read_csv(file_path)
-                reviews = df.iloc[:, 0].tolist()
-            elif file_path.endswith('.xlsx'):
-                df = pd.read_excel(file_path)
-                reviews = df.iloc[:, 0].tolist()
-            elif file_path.endswith('.txt'):
-                with open(file_path, 'r') as file:
-                    reviews = file.readlines()
-                # Remove any extra whitespace
-                reviews = [review.strip() for review in reviews]
-            else:
-                print("Invalid File Path")
-                return
+        if reviews is None:
+            reviews = read_reviews(file_path=file_path,
+                                   download_link=download_link, review_column=review_column)
 
         if reviews:
             probabilities = get_probabilities(
@@ -129,4 +86,9 @@ class Entity:
             print("No reviews to process.")
             return
 
+    def calculate_cost(reviews: List[str] = None) -> float:
 
+        total_cost = calculate_cost_from_reviews(
+            reviews, model="gpt-3.5-turbo-0125")
+
+        return total_cost

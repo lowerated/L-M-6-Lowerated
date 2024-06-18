@@ -1,578 +1,706 @@
 {
-    "Airlines": [
-        "Punctuality",
-        "Comfort",
-        "Service",
-        "Food and Beverage",
-        "In",
-        "Cleanliness",
-        "Value for Money"
-    ],
-    "Animal Shelters": [
-        "Animal Care",
-        "Adoption Process",
-        "Facilities",
-        "Medical Care",
-        "Volunteer Opportunities",
-        "Community Outreach",
-        "Success Stories"
-    ],
-    "Apps": [
-        "User Interface",
-        "Functionality",
-        "Performance",
-        "Security",
-        "Updates",
-        "User Reviews",
-        "Value"
-    ],
-    "Art Galleries": [
-        "Exhibits",
-        "Curation",
-        "Ambiance",
-        "Artist Representation",
-        "Educational Programs",
-        "Accessibility",
-        "Community Engagement"
-    ],
-    "Art Supplies": [
-        "Quality",
-        "Versatility",
-        "Durability",
-        "Ease of Use",
-        "Color Vibrancy",
-        "Packaging",
-        "Value for Money"
-    ],
-    "Board Games": [
-        "Gameplay Mechanics",
-        "Replayability",
-        "Components Quality",
-        "Strategy",
-        "Player Interaction",
-        "Learning Curve",
-        "Theme Integration"
-    ],
-    "Books": [
-        "Writing Style",
-        "Plot",
-        "Characters",
-        "Pacing",
-        "Theme",
-        "Originality",
-        "Impact"
-    ],
-    "Cars": [
-        "Performance",
-        "Fuel Efficiency",
-        "Design",
-        "Comfort",
-        "Safety",
-        "Technology",
-        "Reliability"
-    ],
-    "Children's Toys": [
-        "Safety",
-        "Durability",
-        "Educational Value",
-        "Entertainment Value",
-        "Design",
-        "Age Appropriateness",
-        "Value for Money"
-    ],
-    "Clothing": [
-        "Fabric Quality",
-        "Fit",
-        "Design",
-        "Durability",
-        "Comfort",
-        "Price",
-        "Brand Reputation"
-    ],
-    "DIY Craft Kits": [
-        "Materials Quality",
-        "Instructions Clarity",
-        "Creativity",
-        "Skill Level",
-        "Finished Product",
-        "Value for Money",
-        "Customer Support"
-    ],
-    "Educational Institutions": [
-        "Academic Quality",
-        "Faculty",
-        "Facilities",
-        "Student Support",
-        "Extracurricular Activities",
-        "Reputation",
-        "Value for Money"
-    ],
-    "Escape Rooms": [
-        "Puzzles",
-        "Theme",
-        "Storyline",
-        "Production Value",
-        "Teamwork",
-        "Game Master",
-        "Adrenaline Rush"
-    ],
-    "Events (e.g., concerts, conferences)": [
-        "Organization",
-        "Venue",
-        "Content",
-        "Speakers/Performers",
-        "Networking Opportunities",
-        "Accessibility",
-        "Value for Money"
-    ],
-    "Fashion Styles": [
-        "Creativity",
-        "Functionality",
-        "Trendiness",
-        "Expression",
-        "Versatility",
-        "Impact",
-        "Confidence Boost"
-    ],
-    "Festivals": [
-        "Entertainment",
-        "Activities",
-        "Food",
-        "Atmosphere",
-        "Culture",
-        "Organization",
-        "Memorability"
-    ],
-    "Fictional Characters": [
-        "Complexity",
-        "Relatability",
-        "Impact",
-        "Journey",
-        "Quirkiness",
-        "Iconic Moments",
-        "Endurance"
-    ],
-    "Financial Services": [
-        "Interest Rates",
-        "Customer Service",
-        "Account Features",
-        "Accessibility",
-        "Security",
-        "Reputation",
-        "Value for Money"
-    ],
-    "Fitness Equipment": [
-        "Build Quality",
-        "Functionality",
-        "Ease of Use",
-        "Comfort",
-        "Size and Storage",
-        "Safety",
-        "Price"
-    ],
-    "Fitness Programs": [
-        "Effectiveness",
-        "Instructor Expertise",
-        "Variety",
-        "Accessibility",
-        "Community Support",
-        "Flexibility",
-        "Value for Money"
-    ],
-    "Fitness Trackers": [
-        "Accuracy",
-        "Battery Life",
-        "Design",
-        "Features",
-        "Durability",
-        "User Interface",
-        "Value for Money"
-    ],
-    "Food Blogs": [
-        "Recipes",
-        "Photography",
-        "Writing Style",
-        "Ingredient Information",
-        "User Interaction",
-        "Expertise",
-        "Updates"
-    ],
-    "Food Trucks": [
-        "Taste",
-        "Creativity",
-        "Speed",
-        "Atmosphere",
-        "Value",
-        "Customer Service",
-        "Popularity"
-    ],
-    "Furniture": [
-        "Design",
-        "Comfort",
-        "Materials",
-        "Functionality",
-        "Build Quality",
-        "Aesthetics",
-        "Value for Money"
-    ],
-    "Gardening Centers": [
-        "Plant Variety",
-        "Quality",
-        "Expert Advice",
-        "Tools and Supplies",
-        "Events and Workshops",
-        "Customer Service",
-        "Inspiration"
-    ],
-    "Gardening Tools": [
-        "Durability",
-        "Ease of Use",
-        "Functionality",
-        "Design",
-        "Safety",
-        "Portability",
-        "Value for Money"
-    ],
-    "Haunted Houses": [
-        "Scare Factor",
-        "Design",
-        "Storyline",
-        "Effects",
-        "Actors",
-        "Atmosphere",
-        "Reputation"
-    ],
-    "Home Appliances": [
-        "Performance",
-        "Energy Efficiency",
-        "Design",
-        "Durability",
-        "Noise Level",
-        "Features",
-        "Value for Money"
-    ],
-    "Home Services (e.g., plumbing, cleaning)": [
-        "Quality of Work",
-        "Professionalism",
-        "Punctuality",
-        "Customer Service",
-        "Pricing",
-        "Equipment",
-        "Reputation"
-    ],
-    "Hotels": [
-        "Cleanliness",
-        "Comfort",
-        "Service",
-        "Location",
-        "Facilities",
-        "Food",
-        "Value for Money"
-    ],
-    "Household Cleaning Products": [
-        "Effectiveness",
-        "Safety",
-        "Scent",
-        "Ease of Use",
-        "Packaging",
-        "Versatility",
-        "Value for Money"
-    ],
-    "Kitchen Appliances": [
-        "Performance",
-        "Durability",
-        "Ease of Use",
-        "Design",
-        "Safety",
-        "Energy Efficiency",
-        "Value for Money"
-    ],
-    "Movie": [
-        "Cinematography",
-        "Direction",
-        "Story",
-        "Characters",
-        "Production Design",
-        "Unique Concept",
-        "Emotions"
-    ],
-    "Museums": [
-        "Exhibits",
-        "Educational Value",
-        "Historical Context",
-        "Interactive Features",
-        "Accessibility",
-        "Curation",
-        "Community Outreach"
-    ],
-    "Music": [
-        "Lyrics",
-        "Composition",
-        "Vocals",
-        "Production Quality",
-        "Creativity",
-        "Emotion",
-        "Replayability"
-    ],
-    "Music Festivals": [
-        "Lineup",
-        "Venue",
-        "Organization",
-        "Atmosphere",
-        "Food and Drink",
-        "Activities",
-        "Community"
-    ],
-    "Office Supplies": [
-        "Durability",
-        "Functionality",
-        "Design",
-        "Ease of Use",
-        "Safety",
-        "Environmental Impact",
-        "Value for Money"
-    ],
-    "Online Courses": [
-        "Content Quality",
-        "Instructor Expertise",
-        "Course Structure",
-        "Engagement",
-        "Resources",
-        "Certification",
-        "Value for Money"
-    ],
-    "Online Marketplaces": [
-        "Product Selection",
-        "Seller Reputation",
-        "Customer Service",
-        "Price Competitiveness",
-        "Shipping Options",
-        "User Experience",
-        "Security"
-    ],
-    "Outdoor Gear": [
-        "Durability",
-        "Comfort",
-        "Functionality",
-        "Weight",
-        "Weather Resistance",
-        "Safety",
-        "Value for Money"
-    ],
-    "Partner Qualities": [
-        "Communication",
-        "Trustworthiness",
-        "Support",
-        "Compatibility",
-        "Respect",
-        "Affection",
-        "Commitment"
-    ],
-    "Personal Care Products": [
-        "Effectiveness",
-        "Ingredients",
-        "Scent",
-        "Packaging",
-        "Skin Type Suitability",
-        "Value for Money",
-        "Brand Reputation"
-    ],
-    "Pet Personalities": [
-        "Playfulness",
-        "Affection",
-        "Intelligence",
-        "Socialization",
-        "Independence",
-        "Curiosity",
-        "Vocalization"
-    ],
-    "Pets and Pet Supplies": [
-        "Health",
-        "Nutrition",
-        "Safety",
-        "Durability",
-        "Comfort",
-        "Entertainment",
-        "Value for Money"
-    ],
-    "Photography Equipment": [
-        "Image Quality",
-        "Build Quality",
-        "Ease of Use",
-        "Features",
-        "Portability",
-        "Battery Life",
-        "Value for Money"
-    ],
-    "Podcasts": [
-        "Content Quality",
-        "Hosts",
-        "Production Value",
-        "Guests",
-        "Topics",
-        "Consistency",
-        "Audience Interaction"
-    ],
-    "Real Estate": [
-        "Location",
-        "Price",
-        "Condition",
-        "Size",
-        "Amenities",
-        "Neighborhood",
-        "Investment Potential"
-    ],
-    "Restaurants": [
-        "Food Quality",
-        "Service",
-        "Ambiance",
-        "Cleanliness",
-        "Menu Variety",
-        "Value for Money",
-        "Location"
-    ],
-    "Smartphones": [
-        "Performance",
-        "Camera Quality",
-        "Design",
-        "Battery Life",
-        "User Interface",
-        "Features",
-        "Build Quality"
-    ],
-    "Software": [
-        "Functionality",
-        "Usability",
-        "Performance",
-        "Support",
-        "Security",
-        "Integration",
-        "Value for Money"
-    ],
-    "Sports Equipment": [
-        "Performance",
-        "Durability",
-        "Design",
-        "Comfort",
-        "Brand Reputation",
-        "Safety",
-        "Price"
-    ],
-    "Streaming Services": [
-        "Content Library",
-        "User Interface",
-        "Streaming Quality",
-        "Original Content",
-        "Pricing",
-        "Device Compatibility",
-        "Customer Support"
-    ],
-    "Street Food Stalls": [
-        "Taste",
-        "Hygiene",
-        "Variety",
-        "Price",
-        "Speed",
-        "Popularity",
-        "Location"
-    ],
-    "Subscription Boxes": [
-        "Content Quality",
-        "Variety",
-        "Customization",
-        "Packaging",
-        "Delivery",
-        "Customer Service",
-        "Value for Money"
-    ],
-    "Superheroes": [
-        "Powers",
-        "Costume",
-        "Moral Code",
-        "Villains",
-        "Impact",
-        "Teamwork",
-        "Legacy"
-    ],
-    "Tech Gadgets": [
-        "Performance",
-        "Design",
-        "Features",
-        "Battery Life",
-        "User Experience",
-        "Build Quality",
-        "Value for Money"
-    ],
-    "Travel Destinations": [
-        "Scenery",
-        "Cultural Experience",
-        "Accommodation",
-        "Food",
-        "Accessibility",
-        "Safety",
-        "Activities"
-    ],
-    "Vacation Destinations": [
-        "Adventure",
-        "Relaxation",
-        "Scenery",
-        "Cuisine",
-        "Culture",
-        "Hospitality",
-        "Memories"
-    ],
-    "Video Game Characters": [
-        "Skills",
-        "Backstory",
-        "Design",
-        "Personality",
-        "Character Arc",
-        "Relationships",
-        "Player Connection"
-    ],
-    "Video Games": [
-        "Graphics",
-        "Gameplay",
-        "Story",
-        "Sound Design",
-        "Replayability",
-        "Innovation",
-        "Multiplayer"
-    ],
-    "Video Streaming Platforms": [
-        "Content Library",
-        "Streaming Quality",
-        "User Interface",
-        "Original Content",
-        "Subtitles and Dubbing",
-        "Recommendation System",
-        "Device Compatibility"
-    ],
-    "Virtual Reality Experiences": [
-        "Graphics",
-        "Immersion",
-        "Content Variety",
-        "Interactivity",
-        "Comfort",
-        "Innovation",
-        "Technical Performance"
-    ],
-    "Wines": [
-        "Taste",
-        "Aroma",
-        "Body",
-        "Finish",
-        "Balance",
-        "Ageability",
-        "Value for Money"
-    ],
-    "Yoga Studios": [
-        "Instructors",
-        "Class Variety",
-        "Facilities",
-        "Atmosphere",
-        "Community",
-        "Accessibility",
-        "Effectiveness"
+  "Airlines": {
+    "attributes": [
+      "Punctuality",
+      "Comfort",
+      "Service",
+      "Food and Beverage",
+      "In",
+      "Cleanliness",
+      "Value for Money"
     ]
+  },
+  "Animal Shelters": {
+    "attributes": [
+      "Animal Care",
+      "Adoption Process",
+      "Facilities",
+      "Medical Care",
+      "Volunteer Opportunities",
+      "Community Outreach",
+      "Success Stories"
+    ]
+  },
+  "Apps": {
+    "attributes": [
+      "User Interface",
+      "Functionality",
+      "Performance",
+      "Security",
+      "Updates",
+      "User Reviews",
+      "Value"
+    ]
+  },
+  "Art Galleries": {
+    "attributes": [
+      "Exhibits",
+      "Curation",
+      "Ambiance",
+      "Artist Representation",
+      "Educational Programs",
+      "Accessibility",
+      "Community Engagement"
+    ]
+  },
+  "Art Supplies": {
+    "attributes": [
+      "Quality",
+      "Versatility",
+      "Durability",
+      "Ease of Use",
+      "Color Vibrancy",
+      "Packaging",
+      "Value for Money"
+    ]
+  },
+  "Board Games": {
+    "attributes": [
+      "Gameplay Mechanics",
+      "Replayability",
+      "Components Quality",
+      "Strategy",
+      "Player Interaction",
+      "Learning Curve",
+      "Theme Integration"
+    ]
+  },
+  "Books": {
+    "attributes": [
+      "Writing Style",
+      "Plot",
+      "Characters",
+      "Pacing",
+      "Theme",
+      "Originality",
+      "Impact"
+    ]
+  },
+  "Cars": {
+    "attributes": [
+      "Performance",
+      "Fuel Efficiency",
+      "Design",
+      "Comfort",
+      "Safety",
+      "Technology",
+      "Reliability"
+    ]
+  },
+  "Children's Toys": {
+    "attributes": [
+      "Safety",
+      "Durability",
+      "Educational Value",
+      "Entertainment Value",
+      "Design",
+      "Age Appropriateness",
+      "Value for Money"
+    ]
+  },
+  "Clothing": {
+    "attributes": [
+      "Fabric Quality",
+      "Fit",
+      "Design",
+      "Durability",
+      "Comfort",
+      "Price",
+      "Brand Reputation"
+    ]
+  },
+  "DIY Craft Kits": {
+    "attributes": [
+      "Materials Quality",
+      "Instructions Clarity",
+      "Creativity",
+      "Skill Level",
+      "Finished Product",
+      "Value for Money",
+      "Customer Support"
+    ]
+  },
+  "Educational Institutions": {
+    "attributes": [
+      "Academic Quality",
+      "Faculty",
+      "Facilities",
+      "Student Support",
+      "Extracurricular Activities",
+      "Reputation",
+      "Value for Money"
+    ]
+  },
+  "Escape Rooms": {
+    "attributes": [
+      "Puzzles",
+      "Theme",
+      "Storyline",
+      "Production Value",
+      "Teamwork",
+      "Game Master",
+      "Adrenaline Rush"
+    ]
+  },
+  "Events (e.g., concerts, conferences)": {
+    "attributes": [
+      "Organization",
+      "Venue",
+      "Content",
+      "Speakers/Performers",
+      "Networking Opportunities",
+      "Accessibility",
+      "Value for Money"
+    ]
+  },
+  "Fashion Styles": {
+    "attributes": [
+      "Creativity",
+      "Functionality",
+      "Trendiness",
+      "Expression",
+      "Versatility",
+      "Impact",
+      "Confidence Boost"
+    ]
+  },
+  "Festivals": {
+    "attributes": [
+      "Entertainment",
+      "Activities",
+      "Food",
+      "Atmosphere",
+      "Culture",
+      "Organization",
+      "Memorability"
+    ]
+  },
+  "Fictional Characters": {
+    "attributes": [
+      "Complexity",
+      "Relatability",
+      "Impact",
+      "Journey",
+      "Quirkiness",
+      "Iconic Moments",
+      "Endurance"
+    ]
+  },
+  "Financial Services": {
+    "attributes": [
+      "Interest Rates",
+      "Customer Service",
+      "Account Features",
+      "Accessibility",
+      "Security",
+      "Reputation",
+      "Value for Money"
+    ]
+  },
+  "Fitness Equipment": {
+    "attributes": [
+      "Build Quality",
+      "Functionality",
+      "Ease of Use",
+      "Comfort",
+      "Size and Storage",
+      "Safety",
+      "Price"
+    ]
+  },
+  "Fitness Programs": {
+    "attributes": [
+      "Effectiveness",
+      "Instructor Expertise",
+      "Variety",
+      "Accessibility",
+      "Community Support",
+      "Flexibility",
+      "Value for Money"
+    ]
+  },
+  "Fitness Trackers": {
+    "attributes": [
+      "Accuracy",
+      "Battery Life",
+      "Design",
+      "Features",
+      "Durability",
+      "User Interface",
+      "Value for Money"
+    ]
+  },
+  "Food Blogs": {
+    "attributes": [
+      "Recipes",
+      "Photography",
+      "Writing Style",
+      "Ingredient Information",
+      "User Interaction",
+      "Expertise",
+      "Updates"
+    ]
+  },
+  "Food Trucks": {
+    "attributes": [
+      "Taste",
+      "Creativity",
+      "Speed",
+      "Atmosphere",
+      "Value",
+      "Customer Service",
+      "Popularity"
+    ]
+  },
+  "Furniture": {
+    "attributes": [
+      "Design",
+      "Comfort",
+      "Materials",
+      "Functionality",
+      "Build Quality",
+      "Aesthetics",
+      "Value for Money"
+    ]
+  },
+  "Gardening Centers": {
+    "attributes": [
+      "Plant Variety",
+      "Quality",
+      "Expert Advice",
+      "Tools and Supplies",
+      "Events and Workshops",
+      "Customer Service",
+      "Inspiration"
+    ]
+  },
+  "Gardening Tools": {
+    "attributes": [
+      "Durability",
+      "Ease of Use",
+      "Functionality",
+      "Design",
+      "Safety",
+      "Portability",
+      "Value for Money"
+    ]
+  },
+  "Haunted Houses": {
+    "attributes": [
+      "Scare Factor",
+      "Design",
+      "Storyline",
+      "Effects",
+      "Actors",
+      "Atmosphere",
+      "Reputation"
+    ]
+  },
+  "Home Appliances": {
+    "attributes": [
+      "Performance",
+      "Energy Efficiency",
+      "Design",
+      "Durability",
+      "Noise Level",
+      "Features",
+      "Value for Money"
+    ]
+  },
+  "Home Services (e.g., plumbing, cleaning)": {
+    "attributes": [
+      "Quality of Work",
+      "Professionalism",
+      "Punctuality",
+      "Customer Service",
+      "Pricing",
+      "Equipment",
+      "Reputation"
+    ]
+  },
+  "Hotels": {
+    "attributes": [
+      "Cleanliness",
+      "Comfort",
+      "Service",
+      "Location",
+      "Facilities",
+      "Food",
+      "Value for Money"
+    ]
+  },
+  "Household Cleaning Products": {
+    "attributes": [
+      "Effectiveness",
+      "Safety",
+      "Scent",
+      "Ease of Use",
+      "Packaging",
+      "Versatility",
+      "Value for Money"
+    ]
+  },
+  "Kitchen Appliances": {
+    "attributes": [
+      "Performance",
+      "Durability",
+      "Ease of Use",
+      "Design",
+      "Safety",
+      "Energy Efficiency",
+      "Value for Money"
+    ]
+  },
+  "Movie": {
+    "attributes": [
+      "Cinematography",
+      "Direction",
+      "Story",
+      "Characters",
+      "Production Design",
+      "Unique Concept",
+      "Emotions"
+    ]
+  },
+  "Museums": {
+    "attributes": [
+      "Exhibits",
+      "Educational Value",
+      "Historical Context",
+      "Interactive Features",
+      "Accessibility",
+      "Curation",
+      "Community Outreach"
+    ]
+  },
+  "Music": {
+    "attributes": [
+      "Lyrics",
+      "Composition",
+      "Vocals",
+      "Production Quality",
+      "Creativity",
+      "Emotion",
+      "Replayability"
+    ]
+  },
+  "Music Festivals": {
+    "attributes": [
+      "Lineup",
+      "Venue",
+      "Organization",
+      "Atmosphere",
+      "Food and Drink",
+      "Activities",
+      "Community"
+    ]
+  },
+  "Office Supplies": {
+    "attributes": [
+      "Durability",
+      "Functionality",
+      "Design",
+      "Ease of Use",
+      "Safety",
+      "Environmental Impact",
+      "Value for Money"
+    ]
+  },
+  "Online Courses": {
+    "attributes": [
+      "Content Quality",
+      "Instructor Expertise",
+      "Course Structure",
+      "Engagement",
+      "Resources",
+      "Certification",
+      "Value for Money"
+    ]
+  },
+  "Online Marketplaces": {
+    "attributes": [
+      "Product Selection",
+      "Seller Reputation",
+      "Customer Service",
+      "Price Competitiveness",
+      "Shipping Options",
+      "User Experience",
+      "Security"
+    ]
+  },
+  "Outdoor Gear": {
+    "attributes": [
+      "Durability",
+      "Comfort",
+      "Functionality",
+      "Weight",
+      "Weather Resistance",
+      "Safety",
+      "Value for Money"
+    ]
+  },
+  "Partner Qualities": {
+    "attributes": [
+      "Communication",
+      "Trustworthiness",
+      "Support",
+      "Compatibility",
+      "Respect",
+      "Affection",
+      "Commitment"
+    ]
+  },
+  "Personal Care Products": {
+    "attributes": [
+      "Effectiveness",
+      "Ingredients",
+      "Scent",
+      "Packaging",
+      "Skin Type Suitability",
+      "Value for Money",
+      "Brand Reputation"
+    ]
+  },
+  "Pet Personalities": {
+    "attributes": [
+      "Playfulness",
+      "Affection",
+      "Intelligence",
+      "Socialization",
+      "Independence",
+      "Curiosity",
+      "Vocalization"
+    ]
+  },
+  "Pets and Pet Supplies": {
+    "attributes": [
+      "Health",
+      "Nutrition",
+      "Safety",
+      "Durability",
+      "Comfort",
+      "Entertainment",
+      "Value for Money"
+    ]
+  },
+  "Photography Equipment": {
+    "attributes": [
+      "Image Quality",
+      "Build Quality",
+      "Ease of Use",
+      "Features",
+      "Portability",
+      "Battery Life",
+      "Value for Money"
+    ]
+  },
+  "Podcasts": {
+    "attributes": [
+      "Content Quality",
+      "Hosts",
+      "Production Value",
+      "Guests",
+      "Topics",
+      "Consistency",
+      "Audience Interaction"
+    ]
+  },
+  "Real Estate": {
+    "attributes": [
+      "Location",
+      "Price",
+      "Condition",
+      "Size",
+      "Amenities",
+      "Neighborhood",
+      "Investment Potential"
+    ]
+  },
+  "Restaurants": {
+    "attributes": [
+      "Food Quality",
+      "Service",
+      "Ambiance",
+      "Cleanliness",
+      "Menu Variety",
+      "Value for Money",
+      "Location"
+    ]
+  },
+  "Smartphones": {
+    "attributes": [
+      "Performance",
+      "Camera Quality",
+      "Design",
+      "Battery Life",
+      "User Interface",
+      "Features",
+      "Build Quality"
+    ]
+  },
+  "Software": {
+    "attributes": [
+      "Functionality",
+      "Usability",
+      "Performance",
+      "Support",
+      "Security",
+      "Integration",
+      "Value for Money"
+    ]
+  },
+  "Sports Equipment": {
+    "attributes": [
+      "Performance",
+      "Durability",
+      "Design",
+      "Comfort",
+      "Brand Reputation",
+      "Safety",
+      "Price"
+    ]
+  },
+  "Streaming Services": {
+    "attributes": [
+      "Content Library",
+      "User Interface",
+      "Streaming Quality",
+      "Original Content",
+      "Pricing",
+      "Device Compatibility",
+      "Customer Support"
+    ]
+  },
+  "Street Food Stalls": {
+    "attributes": [
+      "Taste",
+      "Hygiene",
+      "Variety",
+      "Price",
+      "Speed",
+      "Popularity",
+      "Location"
+    ]
+  },
+  "Subscription Boxes": {
+    "attributes": [
+      "Content Quality",
+      "Variety",
+      "Customization",
+      "Packaging",
+      "Delivery",
+      "Customer Service",
+      "Value for Money"
+    ]
+  },
+  "Superheroes": {
+    "attributes": [
+      "Powers",
+      "Costume",
+      "Moral Code",
+      "Villains",
+      "Impact",
+      "Teamwork",
+      "Legacy"
+    ]
+  },
+  "Tech Gadgets": {
+    "attributes": [
+      "Performance",
+      "Design",
+      "Features",
+      "Battery Life",
+      "User Experience",
+      "Build Quality",
+      "Value for Money"
+    ]
+  },
+  "Travel Destinations": {
+    "attributes": [
+      "Scenery",
+      "Cultural Experience",
+      "Accommodation",
+      "Food",
+      "Accessibility",
+      "Safety",
+      "Activities"
+    ]
+  },
+  "Vacation Destinations": {
+    "attributes": [
+      "Adventure",
+      "Relaxation",
+      "Scenery",
+      "Cuisine",
+      "Culture",
+      "Hospitality",
+      "Memories"
+    ]
+  },
+  "Video Game Characters": {
+    "attributes": [
+      "Skills",
+      "Backstory",
+      "Design",
+      "Personality",
+      "Character Arc",
+      "Relationships",
+      "Player Connection"
+    ]
+  },
+  "Video Games": {
+    "attributes": [
+      "Graphics",
+      "Gameplay",
+      "Story",
+      "Sound Design",
+      "Replayability",
+      "Innovation",
+      "Multiplayer"
+    ]
+  },
+  "Video Streaming Platforms": {
+    "attributes": [
+      "Content Library",
+      "Streaming Quality",
+      "User Interface",
+      "Original Content",
+      "Subtitles and Dubbing",
+      "Recommendation System",
+      "Device Compatibility"
+    ]
+  },
+  "Virtual Reality Experiences": {
+    "attributes": [
+      "Graphics",
+      "Immersion",
+      "Content Variety",
+      "Interactivity",
+      "Comfort",
+      "Innovation",
+      "Technical Performance"
+    ]
+  },
+  "Wines": {
+    "attributes": [
+      "Taste",
+      "Aroma",
+      "Body",
+      "Finish",
+      "Balance",
+      "Ageability",
+      "Value for Money"
+    ]
+  },
+  "Yoga Studios": {
+    "attributes": [
+      "Instructors",
+      "Class Variety",
+      "Facilities",
+      "Atmosphere",
+      "Community",
+      "Accessibility",
+      "Effectiveness"
+    ]
+  }
 }
