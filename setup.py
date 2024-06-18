@@ -13,7 +13,7 @@ setup(
     long_description_content_type='text/markdown',
     url='http://lowerated.com/products/',
     name='lowerated',
-    version='0.1.3',
+    version='0.1.4',
     packages=find_packages(),
     install_requires=[
         'numpy',
