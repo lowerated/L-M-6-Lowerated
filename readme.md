@@ -107,7 +107,7 @@ Rate the attributes of an entity using a list of textual reviews:
 
 ```python
 reviews_list = ["Great movie!", "Not worth the price.", "Excellent cinematography."]
-rating = movie_entity.rate(reviews=reviews_list, openai_key=openai_key)
+rating = movie_entity.rate(reviews=reviews_list)
 print(rating)
 ```
 
@@ -117,7 +117,7 @@ Rate the attributes of an entity using a file containing reviews. Supported file
 
 ```python
 file_path = "reviews.csv"  # Can be .csv, .xlsx, or .txt
-rating = movie_entity.rate(file_path=file_path, openai_key=openai_key)
+rating = movie_entity.rate(file_path=file_path)
 print(rating)
 ```
 
@@ -127,7 +127,7 @@ Rate the attributes of an entity using a URL to download the file containing rev
 
 ```python
 download_link = "https://example.com/reviews.xlsx"  # Can be .csv, .xlsx, or .txt
-rating = movie_entity.rate(download_link=download_link, openai_key=openai_key)
+rating = movie_entity.rate(download_link=download_link)
 print(rating)
 ```
 
