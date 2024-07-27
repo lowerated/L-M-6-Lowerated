@@ -7,3 +7,7 @@ __pycache__/
 dist/
 build/
 .env
+train-test/deberta-v3-fine-tuned
+train-test/logs
+train-test/results
+data/

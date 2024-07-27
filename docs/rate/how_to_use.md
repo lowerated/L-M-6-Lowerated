@@ -39,7 +39,7 @@ print(entities)
 To see a specific entity's attributes, use the code below:
 
 ```python
-entity_name = "Product"
+entity_name = "Movie"
 attributes = find_attributes(entity_name)
 print(attributes)
 ```
@@ -49,8 +49,8 @@ print(attributes)
 Create an instance of the `Entity` class by specifying the entity name and optionally its attributes:
 
 ```python
-entity_name = "Product"
-attributes = ["Quality", "Value for Money", "Durability"]
+entity_name = "Movie"
+attributes = ['Cinematography', 'Direction', 'Story', 'Characters', 'Production Design', 'Unique Concept', 'Emotions']
 product_entity = Entity(entity_name, attributes)
 ```
 
@@ -59,8 +59,7 @@ product_entity = Entity(entity_name, attributes)
 Rate the attributes of an entity using a list of textual reviews:
 
 ```python
-reviews_list = ["Great product!", "Not worth the price.", "Excellent quality."]
-openai_key = "your-openai-api-key"
+reviews_list = ["Great movie!", "Not worth the price.", "Excellent cinematography."]
 probabilities = product_entity.rate(reviews=reviews_list, openai_key=openai_key)
 print(probabilities)
 ```
@@ -71,7 +70,6 @@ Rate the attributes of an entity using a file containing reviews. Supported file
 
 ```python
 file_path = "reviews.csv"  # Can be .csv, .xlsx, or .txt
-openai_key = "your-openai-api-key"
 probabilities = product_entity.rate(file_path=file_path, openai_key=openai_key)
 print(probabilities)
 ```
@@ -82,7 +80,6 @@ Rate the attributes of an entity using a URL to download the file containing rev
 
 ```python
 download_link = "https://example.com/reviews.xlsx"  # Can be .csv, .xlsx, or .txt
-openai_key = "your-openai-api-key"
 probabilities = product_entity.rate(download_link=download_link, openai_key=openai_key)
 print(probabilities)
 ```
@@ -104,22 +101,8 @@ print(probabilities)
   - `get_entity_attributes`: Returns the attributes of the specified entity.
   - `rate`: Rates the attributes of the entity based on reviews provided directly, from a file path, or a download link.
 
-### JSON File Structure
+## Example Output
 
-Ensure the `entities.json` file has the following structure:
-
-```json
-{
-  "Product": {
-    "attributes": ["Quality", "Value for Money", "Durability"]
-  },
-  "Service": {
-    "attributes": ["Customer Service", "Efficiency", "Cost"]
-  }
-}
 ```
-
-### Notes
-
-- The `rate` method returns probabilities as a JSON object with attributes and their values.
-- Make sure the `get_probabilities` function is defined in `lowerated/rate/utils.py`.
+{'Cinematography': 0.7, 'Direction': 0.0, 'Story': 0.5, 'Characters': 0.8, 'Production Design': 0.9, 'Unique Concept': 0.0, 'Emotions': -0.4}
+```

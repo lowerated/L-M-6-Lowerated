@@ -1,15 +1,8 @@
 from lowerated.rate.entity import Entity
-from lowerated.rate.utils import calculate_cost
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
-
-openai_key = os.environ["OPENAI_API_KEY"]
 
 # Example usage
 if __name__ == "__main__":
-    reviews = [
+    some_movie_reviews = [
         "bad movie!", "worse than other movies.", "bad.",
         "best movie", "very good movie", "the cinematography was insane",
         "story was so beautiful", "the emotional element was missing but cinematography was great",
@@ -19,14 +12,12 @@ if __name__ == "__main__":
         "such stories are rare to find"
     ]
 
-    # get costs
-    costs = calculate_cost(reviews=reviews)
-    print(f"To rate the reviews, the algorithm will cost: {costs} $")
-
+    # Create entity object (loads the whole pipeline)
     entity = Entity(name="Movie")
+
+    # Get list of aspects. ('Cinematography', 'Direction', 'Story', 'Characters', 'Production Design', 'Unique Concept', 'Emotions')
     attributes = entity.get_attributes()
 
-    rating = entity.rate(
-        reviews=reviews, openai_key=openai_key)
+    rating = entity.rate(reviews=some_movie_reviews)
 
     print(rating)

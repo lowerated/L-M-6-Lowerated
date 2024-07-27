@@ -1,15 +1,16 @@
+from transformers import DebertaV2ForSequenceClassification, DebertaV2Tokenizer
 import json
-from typing import List
-import pandas as pd
-from lowerated.rate.utils import get_probabilities
-from lowerated.rate.reviews_extraction import read_reviews
-import requests
+from typing import Dict, List
+import numpy as np
+from lowerated.rate.utils import predict_sentiment, compute_overall_rating, get_weights, rolling_mean_update
 
+# Load entity weights
+with open('./lowerated/rate/entities.json', 'r') as file:
+    entity_data = json.load(file)
 
+# Entity class definition
 class Entity:
-    entities = {}
-    with open('./lowerated/rate/entities.json', 'r') as file:
-        entities = json.load(file)
+    entities = entity_data
 
     def __init__(self, name, attributes=None):
         self.name = name
@@ -26,69 +27,63 @@ class Entity:
         return f"Entity: {self.attributes}"
 
     def get_attributes(self):
-        """
-        Returns attributes of the current entity.
-        """
         return self.attributes
+
+    def get_weights(self):
+        return Entity.entities.get(self.name, {}).get('weights', {label: 1 for label in label_columns})
 
     @staticmethod
     def get_entities():
-        """
-        Returns all available default entities.
-        """
         return Entity.entities.keys()
 
     @staticmethod
     def get_entity_attributes(name: str) -> List[str]:
-        """
-        Returns attributes of the entity mentioned in the argument
-        """
         entity = Entity.entities.get(name, None)
         if entity:
             return list(entity['attributes'])
         else:
             return None
 
-    def rate(self, reviews: List[str] = None, file_path: str = None, download_link: str = None, review_column: str = None, openai_key: str = None):
-        """
-        Using Reviews directly given in a list of strings, or a path to csv, xlsx, or txt file with reviews listed in one column,
-        Rate the Attributes of the Entities in the Reviews, then average out one value for each attribute.
-
-        Args:
-            reviews: list of textual reviews
-            review_column: helps in specifying the review column.
-            range: if the reviews are too many and the cost is too much, you can test the rating on limited reviews.
-            file_path: path to csv, xlsx, or txt file with reviews listed in one column. If more than one column, then each column is treated as an attribute.
-            download_link: URL to download the file.
-            openai_key: OpenAI API key (costs: {--} per 1000 Reviews)
-
-        Returns:
-            probabilities: Json with 7 attributes of the entity and their values.
-                           Example: {
-                                        "price": 0.5,
-                                        "quality": 0.8,
-                                        "design": 0.3,
-                                        "usability": 0.6,
-                                        "performance": 0.7,
-                                        "features": 0.4,
-                                        "support": 0.9
-                           }
-        """
+    def rate(self, reviews: List[str] = None, file_path: str = None, download_link: str = None, review_column: str = None):
         if reviews is None:
-            reviews = read_reviews(file_path=file_path,
-                                   download_link=download_link, review_column=review_column)
+            reviews = read_reviews(file_path=file_path, download_link=download_link, review_column=review_column)
 
         if reviews:
-            probabilities = get_probabilities(
-                reviews=reviews, entity=self.name, attributes=self.attributes, key=openai_key)
+            probabilities = get_rating(reviews=reviews, entity=self.name, attributes=self.attributes)
             return probabilities
         else:
             print("No reviews to process.")
             return
 
-    def calculate_cost(reviews: List[str] = None) -> float:
+# Implement get_rating function
+def get_rating(reviews: List[str], entity: str, attributes: List[str]) -> Dict[str, float]:
+    """
+    Returns the Probabilities of the Attributes in the Text
 
-        total_cost = calculate_cost_from_reviews(
-            reviews, model="gpt-3.5-turbo-0125")
+    Args:
+        reviews: List of review texts
+        entity: Name of the entity
+        attributes: List of Attributes to rate
 
-        return total_cost
+    Return:
+        Dict: Probabilities of the Attributes {"attribute_1":0.3,"attribute_2":0.7} i.e Aspect-wise weighted mean.
+        LM6: Final Rating
+    """
+    try:
+        probabilities = {attribute: 0.0 for attribute in attributes}
+        count = 0
+
+        for review in reviews:
+            sentiment_scores = predict_sentiment(review)
+            for i, attribute in enumerate(attributes):
+                probabilities[attribute] = rolling_mean_update(probabilities[attribute], sentiment_scores[i], count)
+            count += 1
+
+        overall_rating = compute_overall_rating(np.array([probabilities[attr] for attr in attributes]), get_weights(entity))
+        probabilities['Overall Rating'] = overall_rating
+
+        return probabilities
+
+    except Exception as e:
+        print(f"Error in getting probabilities: {e}")
+        return {}

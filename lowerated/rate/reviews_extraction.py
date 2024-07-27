@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup
-import openai
 import numpy as np
 import json
 from typing import List, Dict
@@ -125,9 +124,3 @@ def bring_web_reviews(keywords: List[str]):
         results[keyword] = review_snippets
 
     return results
-
-
-# Example usage
-# keywords = ["second cup coffee shop", "New York"]
-# reviews = bring_web_reviews(keywords)
-# print(json.dumps(reviews, indent=4))
