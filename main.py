@@ -13,11 +13,9 @@ if __name__ == "__main__":
     ]
 
     # Create entity object (loads the whole pipeline)
+    # list of aspects. ('Cinematography', 'Direction', 'Story', 'Characters', 'Production Design', 'Unique Concept', 'Emotions')
     entity = Entity(name="Movie")
-
-    # Get list of aspects. ('Cinematography', 'Direction', 'Story', 'Characters', 'Production Design', 'Unique Concept', 'Emotions')
-    attributes = entity.get_attributes()
 
     rating = entity.rate(reviews=some_movie_reviews)
 
-    print(rating)
+    print("LM6: ", rating["LM6"])

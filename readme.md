@@ -98,7 +98,7 @@ Create an instance of the `Entity` class by specifying the entity name and optio
 ```python
 entity_name = "Movie"
 attributes = ['Cinematography', 'Direction', 'Story', 'Characters', 'Production Design', 'Unique Concept', 'Emotions']
-product_entity = Entity(entity_name, attributes)
+movie_entity = Entity(entity_name, attributes)
 ```
 
 ### Example 1: Using a List of Reviews
@@ -107,8 +107,8 @@ Rate the attributes of an entity using a list of textual reviews:
 
 ```python
 reviews_list = ["Great movie!", "Not worth the price.", "Excellent cinematography."]
-probabilities = product_entity.rate(reviews=reviews_list, openai_key=openai_key)
-print(probabilities)
+rating = movie_entity.rate(reviews=reviews_list, openai_key=openai_key)
+print(rating)
 ```
 
 ### Example 2: Using a File Path
@@ -117,8 +117,8 @@ Rate the attributes of an entity using a file containing reviews. Supported file
 
 ```python
 file_path = "reviews.csv"  # Can be .csv, .xlsx, or .txt
-probabilities = product_entity.rate(file_path=file_path, openai_key=openai_key)
-print(probabilities)
+rating = movie_entity.rate(file_path=file_path, openai_key=openai_key)
+print(rating)
 ```
 
 ### Example 3: Using a Download Link
@@ -127,8 +127,8 @@ Rate the attributes of an entity using a URL to download the file containing rev
 
 ```python
 download_link = "https://example.com/reviews.xlsx"  # Can be .csv, .xlsx, or .txt
-probabilities = product_entity.rate(download_link=download_link, openai_key=openai_key)
-print(probabilities)
+rating = movie_entity.rate(download_link=download_link, openai_key=openai_key)
+print(rating)
 ```
 
 ### Notes

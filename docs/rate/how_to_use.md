@@ -25,6 +25,7 @@ from lowerated.rate.utils import entities, find_attributes
 
 3. Define the `Entity` class with its methods.
 
+
 ## Usage
 
 ### See Available Entities & their Attributes
@@ -51,7 +52,7 @@ Create an instance of the `Entity` class by specifying the entity name and optio
 ```python
 entity_name = "Movie"
 attributes = ['Cinematography', 'Direction', 'Story', 'Characters', 'Production Design', 'Unique Concept', 'Emotions']
-product_entity = Entity(entity_name, attributes)
+movie_entity = Entity(entity_name, attributes)
 ```
 
 ### Example 1: Using a List of Reviews
@@ -60,8 +61,8 @@ Rate the attributes of an entity using a list of textual reviews:
 
 ```python
 reviews_list = ["Great movie!", "Not worth the price.", "Excellent cinematography."]
-probabilities = product_entity.rate(reviews=reviews_list, openai_key=openai_key)
-print(probabilities)
+rating = movie_entity.rate(reviews=reviews_list, openai_key=openai_key)
+print(rating)
 ```
 
 ### Example 2: Using a File Path
@@ -70,8 +71,8 @@ Rate the attributes of an entity using a file containing reviews. Supported file
 
 ```python
 file_path = "reviews.csv"  # Can be .csv, .xlsx, or .txt
-probabilities = product_entity.rate(file_path=file_path, openai_key=openai_key)
-print(probabilities)
+rating = movie_entity.rate(file_path=file_path, openai_key=openai_key)
+print(rating)
 ```
 
 ### Example 3: Using a Download Link
@@ -80,29 +81,17 @@ Rate the attributes of an entity using a URL to download the file containing rev
 
 ```python
 download_link = "https://example.com/reviews.xlsx"  # Can be .csv, .xlsx, or .txt
-probabilities = product_entity.rate(download_link=download_link, openai_key=openai_key)
-print(probabilities)
+rating = movie_entity.rate(download_link=download_link, openai_key=openai_key)
+print(rating)
 ```
 
-### Class and Method Details
+### Notes
 
-#### `Entity` Class
+- The `rate` method returns probabilities as a JSON object with attributes and their values.
+- Make sure the `get_probabilities` function is defined in `lowerated/rate/utils.py`.
 
-- **Constructor**: Initializes an `Entity` instance.
+### Lisence
 
-  ```python
-  def __init__(self, name, attributes=None):
-  ```
+[Apache 2.0](./LICENSE)
 
-- **Methods**:
-  - `__str__`: Returns a string representation of the entity.
-  - `get_attributes`: Returns the attributes of the current entity.
-  - `get_entities`: Returns all available default entities.
-  - `get_entity_attributes`: Returns the attributes of the specified entity.
-  - `rate`: Rates the attributes of the entity based on reviews provided directly, from a file path, or a download link.
-
-## Example Output
-
-```
-{'Cinematography': 0.7, 'Direction': 0.0, 'Story': 0.5, 'Characters': 0.8, 'Production Design': 0.9, 'Unique Concept': 0.0, 'Emotions': -0.4}
-```
+Copyright (2024) FACT-RATED MEDIA (PVT-LTD)

@@ -2,7 +2,7 @@ from transformers import DebertaV2ForSequenceClassification, DebertaV2Tokenizer
 import json
 from typing import Dict, List
 import numpy as np
-from lowerated.rate.utils import predict_sentiment, compute_overall_rating, get_weights, rolling_mean_update
+from lowerated.rate.utils import get_rating
 
 # Load entity weights
 with open('./lowerated/rate/entities.json', 'r') as file:
@@ -49,41 +49,8 @@ class Entity:
             reviews = read_reviews(file_path=file_path, download_link=download_link, review_column=review_column)
 
         if reviews:
-            probabilities = get_rating(reviews=reviews, entity=self.name, attributes=self.attributes)
-            return probabilities
+            rating = get_rating(reviews=reviews, entity=self.name, attributes=self.attributes)
+            return rating
         else:
             print("No reviews to process.")
             return
-
-# Implement get_rating function
-def get_rating(reviews: List[str], entity: str, attributes: List[str]) -> Dict[str, float]:
-    """
-    Returns the Probabilities of the Attributes in the Text
-
-    Args:
-        reviews: List of review texts
-        entity: Name of the entity
-        attributes: List of Attributes to rate
-
-    Return:
-        Dict: Probabilities of the Attributes {"attribute_1":0.3,"attribute_2":0.7} i.e Aspect-wise weighted mean.
-        LM6: Final Rating
-    """
-    try:
-        probabilities = {attribute: 0.0 for attribute in attributes}
-        count = 0
-
-        for review in reviews:
-            sentiment_scores = predict_sentiment(review)
-            for i, attribute in enumerate(attributes):
-                probabilities[attribute] = rolling_mean_update(probabilities[attribute], sentiment_scores[i], count)
-            count += 1
-
-        overall_rating = compute_overall_rating(np.array([probabilities[attr] for attr in attributes]), get_weights(entity))
-        probabilities['Overall Rating'] = overall_rating
-
-        return probabilities
-
-    except Exception as e:
-        print(f"Error in getting probabilities: {e}")
-        return {}

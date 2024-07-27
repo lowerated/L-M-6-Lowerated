@@ -1,7 +1,7 @@
 import torch
 from transformers import DebertaV2ForSequenceClassification, DebertaV2Tokenizer
 import json
-from typing import Dict
+from typing import Dict, List
 import numpy as np
 
 # Load the fine-tuned model and tokenizer
@@ -96,3 +96,37 @@ def compute_overall_rating(predictions: np.ndarray, weights: Dict[str, float]) -
     total_weight = sum(weights.values())
     return weighted_sum / total_weight
 
+
+
+# Implement get_rating function
+def get_rating(reviews: List[str], entity: str, attributes: List[str]) -> Dict[str, float]:
+    """
+    Returns the Probabilities of the Attributes in the Text
+
+    Args:
+        reviews: List of review texts
+        entity: Name of the entity
+        attributes: List of Attributes to rate
+
+    Return:
+        Dict: Probabilities of the Attributes {"attribute_1":0.3,"attribute_2":0.7} i.e Aspect-wise weighted mean.
+        LM6: Final Rating
+    """
+    try:
+        probabilities = {attribute: 0.0 for attribute in attributes}
+        count = 0
+
+        for review in reviews:
+            sentiment_scores = predict_sentiment(review)
+            for i, attribute in enumerate(attributes):
+                probabilities[attribute] = rolling_mean_update(probabilities[attribute], sentiment_scores[i], count)
+            count += 1
+
+        overall_rating = compute_overall_rating(np.array([probabilities[attr] for attr in attributes]), get_weights(entity))
+        probabilities['LM6'] = overall_rating
+
+        return probabilities
+
+    except Exception as e:
+        print(f"Error in getting probabilities: {e}")
+        return {}
