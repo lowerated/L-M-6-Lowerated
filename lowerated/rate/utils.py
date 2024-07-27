@@ -14,11 +14,8 @@ model.eval()
 # Define the label mapping
 label_columns = ['Cinematography', 'Direction', 'Story', 'Characters', 'Production Design', 'Unique Concept', 'Emotions']
 
-# Load entity weights
-with open('./lowerated/rate/entities.json', 'r') as file:
-    entity_data = json.load(file)
 
-def get_weights(entity: str) -> Dict[str, float]:
+def get_weights(entity: str, entity_data: Dict) -> Dict[str, float]:
     """
     Returns weights for the given entity.
 
@@ -99,7 +96,7 @@ def compute_overall_rating(predictions: np.ndarray, weights: Dict[str, float]) -
 
 
 # Implement get_rating function
-def get_rating(reviews: List[str], entity: str, attributes: List[str]) -> Dict[str, float]:
+def get_rating(reviews: List[str], entity: str, attributes: List[str], entity_data: Dict) -> Dict[str, float]:
     """
     Returns the Probabilities of the Attributes in the Text
 
@@ -107,6 +104,7 @@ def get_rating(reviews: List[str], entity: str, attributes: List[str]) -> Dict[s
         reviews: List of review texts
         entity: Name of the entity
         attributes: List of Attributes to rate
+        entity_data: all entities, their aspects and their weights
 
     Return:
         Dict: Probabilities of the Attributes {"attribute_1":0.3,"attribute_2":0.7} i.e Aspect-wise weighted mean.
@@ -122,7 +120,7 @@ def get_rating(reviews: List[str], entity: str, attributes: List[str]) -> Dict[s
                 probabilities[attribute] = rolling_mean_update(probabilities[attribute], sentiment_scores[i], count)
             count += 1
 
-        overall_rating = compute_overall_rating(np.array([probabilities[attr] for attr in attributes]), get_weights(entity))
+        overall_rating = compute_overall_rating(np.array([probabilities[attr] for attr in attributes]), get_weights(entity, entity_data))
         probabilities['LM6'] = overall_rating
 
         return probabilities

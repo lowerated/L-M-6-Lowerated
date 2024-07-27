@@ -1,16 +1,32 @@
-from transformers import DebertaV2ForSequenceClassification, DebertaV2Tokenizer
 import json
 from typing import Dict, List
-import numpy as np
 from lowerated.rate.utils import get_rating
 
-# Load entity weights
-with open('./lowerated/rate/entities.json', 'r') as file:
-    entity_data = json.load(file)
 
 # Entity class definition
 class Entity:
-    entities = entity_data
+    entities = {
+    "Movie": {
+        "attributes": [
+        "Cinematography",
+        "Direction",
+        "Story",
+        "Characters",
+        "Production Design",
+        "Unique Concept",
+        "Emotions"
+        ],
+        "weights": {
+        "Cinematography": 1,
+        "Direction": 1,
+        "Story": 1,
+        "Characters": 1,
+        "Production Design": 1,
+        "Unique Concept": 1,
+        "Emotions": 1
+        }
+    }
+    }
 
     def __init__(self, name, attributes=None):
         self.name = name
@@ -30,7 +46,7 @@ class Entity:
         return self.attributes
 
     def get_weights(self):
-        return Entity.entities.get(self.name, {}).get('weights', {label: 1 for label in label_columns})
+        return Entity.entities.get(self.name, {}).get('weights', {label: 1 for label in self.attributes})
 
     @staticmethod
     def get_entities():
@@ -49,7 +65,7 @@ class Entity:
             reviews = read_reviews(file_path=file_path, download_link=download_link, review_column=review_column)
 
         if reviews:
-            rating = get_rating(reviews=reviews, entity=self.name, attributes=self.attributes)
+            rating = get_rating(reviews=reviews, entity=self.name, attributes=self.attributes, entity_data=self.entities)
             return rating
         else:
             print("No reviews to process.")
