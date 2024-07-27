@@ -131,29 +131,6 @@ probabilities = product_entity.rate(download_link=download_link, openai_key=open
 print(probabilities)
 ```
 
-### Class and Method Details
-
-#### `Entity` Class
-
-- **Constructor**: Initializes an `Entity` instance.
-
-  ```python
-  def __init__(self, name, attributes=None):
-  ```
-
-- **Methods**:
-  - `__str__`: Returns a string representation of the entity.
-  - `get_attributes`: Returns the attributes of the current entity.
-  - `get_entities`: Returns all available default entities.
-  - `get_entity_attributes`: Returns the attributes of the specified entity.
-  - `rate`: Rates the attributes of the entity based on reviews provided directly, from a file path, or a download link.
-
-## Example Output
-
-```
-{'Cinematography': 0.7, 'Direction': 0.0, 'Story': 0.5, 'Characters': 0.8, 'Production Design': 0.9, 'Unique Concept': 0.0, 'Emotions': -0.4}
-```
-
 ### Notes
 
 - The `rate` method returns probabilities as a JSON object with attributes and their values.
