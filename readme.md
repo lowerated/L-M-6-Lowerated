@@ -131,11 +131,6 @@ rating = movie_entity.rate(download_link=download_link, openai_key=openai_key)
 print(rating)
 ```
 
-### Notes
-
-- The `rate` method returns probabilities as a JSON object with attributes and their values.
-- Make sure the `get_probabilities` function is defined in `lowerated/rate/utils.py`.
-
 ### Lisence
 
 [Apache 2.0](./LICENSE)
