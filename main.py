@@ -13,9 +13,10 @@ if __name__ == "__main__":
     ]
 
     # Create entity object (loads the whole pipeline)
-    # list of aspects. ('Cinematography', 'Direction', 'Story', 'Characters', 'Production Design', 'Unique Concept', 'Emotions')
     entity = Entity(name="Movie")
 
     rating = entity.rate(reviews=some_movie_reviews)
+
+    rating = entity.scale_rating(rating)
 
     print("LM6: ", rating["LM6"])

@@ -14,6 +14,11 @@ model.eval()
 # Define the label mapping
 label_columns = ['Cinematography', 'Direction', 'Story', 'Characters', 'Production Design', 'Unique Concept', 'Emotions']
 
+def scale_rating(value, min_rating=-1, max_rating=10):
+    """
+    Scale the rating to the range -100% to 100%
+    """
+    return ((value - min_rating) / (max_rating - min_rating)) * 200 - 100
 
 def get_weights(entity: str, entity_data: Dict) -> Dict[str, float]:
     """
@@ -93,8 +98,6 @@ def compute_overall_rating(predictions: np.ndarray, weights: Dict[str, float]) -
     total_weight = sum(weights.values())
     return weighted_sum / total_weight
 
-
-
 # Implement get_rating function
 def get_rating(reviews: List[str], entity: str, attributes: List[str], entity_data: Dict) -> Dict[str, float]:
     """
@@ -128,3 +131,9 @@ def get_rating(reviews: List[str], entity: str, attributes: List[str], entity_da
     except Exception as e:
         print(f"Error in getting probabilities: {e}")
         return {}
+
+def scale_rating(value, min_rating=-1, max_rating=10):
+    """
+    Scale the rating to the range -100% to 100%
+    """
+    return ((value - min_rating) / (max_rating - min_rating)) * 200 - 100

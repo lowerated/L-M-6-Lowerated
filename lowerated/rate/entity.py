@@ -1,31 +1,31 @@
 import json
 from typing import Dict, List
+from lowerated.rate.utils import scale_rating as utils_scale_rating
 from lowerated.rate.utils import get_rating
-
-
+from lowerated.rate.reviews_extraction import read_reviews
 # Entity class definition
 class Entity:
     entities = {
-    "Movie": {
-        "attributes": [
-        "Cinematography",
-        "Direction",
-        "Story",
-        "Characters",
-        "Production Design",
-        "Unique Concept",
-        "Emotions"
-        ],
-        "weights": {
-        "Cinematography": 1,
-        "Direction": 1,
-        "Story": 1,
-        "Characters": 1,
-        "Production Design": 1,
-        "Unique Concept": 1,
-        "Emotions": 1
+        "Movie": {
+            "attributes": [
+                "Cinematography",
+                "Direction",
+                "Story",
+                "Characters",
+                "Production Design",
+                "Unique Concept",
+                "Emotions"
+            ],
+            "weights": {
+                "Cinematography": 1,
+                "Direction": 1,
+                "Story": 1,
+                "Characters": 1,
+                "Production Design": 1,
+                "Unique Concept": 1,
+                "Emotions": 1
+            }
         }
-    }
     }
 
     def __init__(self, name, attributes=None):
@@ -69,4 +69,14 @@ class Entity:
             return rating
         else:
             print("No reviews to process.")
-            return
+            return None
+
+    @staticmethod
+    def scale_rating(rating: Dict[str, float]) -> Dict[str, float]:
+        """
+        Scale the ratings to the range -100% to 100%
+        """
+        scaled_rating = {}
+        for key, value in rating.items():
+            scaled_rating[key] = utils_scale_rating(value, min_rating=-1, max_rating=10)
+        return scaled_rating
