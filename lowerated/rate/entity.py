@@ -1,8 +1,8 @@
 import json
 from typing import Dict, List
-from lowerated.rate.utils import get_rating
+from lowerated.rate.utils import get_rating, update_rating_with_new_review
 from lowerated.rate.reviews_extraction import read_reviews
-# Entity class definition
+
 class Entity:
     entities = {
         "Movie": {
@@ -15,13 +15,14 @@ class Entity:
                 "Unique Concept",
                 "Emotions"
             ],
-            "weights":{'Cinematography': 0.14704225352112676,
-                        'Direction': 0.1447887323943662, 
-                        'Story': 0.1563380281690141, 
-                        'Characters': 0.1447887323943662, 
-                        'Production Design': 0.12929577464788733, 
-                        'Unique Concept': 0.13464788732394367, 
-                        'Emotions': 0.14309859154929577
+            "weights": {
+                'Cinematography': 0.14704225352112676,
+                'Direction': 0.1447887323943662,
+                'Story': 0.1563380281690141,
+                'Characters': 0.1447887323943662,
+                'Production Design': 0.12929577464788733,
+                'Unique Concept': 0.13464788732394367,
+                'Emotions': 0.14309859154929577
             }
         }
     }
@@ -58,16 +59,32 @@ class Entity:
         else:
             return None
 
-    def rate(self, reviews: List[str] = None, file_path: str = None, download_link: str = None, review_column: str = None):
+    def rate(self, reviews: List[str] = None, file_path: str = None, download_link: str = None, review_column: str = None) -> Dict[str, float]:
         if reviews is None:
             reviews = read_reviews(file_path=file_path, download_link=download_link, review_column=review_column)
 
         if reviews:
             rating = get_rating(reviews=reviews, entity=self.name, attributes=self.attributes, entity_data=self.entities)
-            return rating
+            scaled_rating = self.scale_rating(rating)
+            return scaled_rating
         else:
             print("No reviews to process.")
             return None
+
+    def update_rating(self, new_review: str, current_ratings: Dict[str, float], count: int) -> Dict[str, float]:
+        if new_review and current_ratings and count >= 0:
+            updated_ratings = update_rating_with_new_review(
+                review=new_review,
+                current_ratings=current_ratings,
+                count=count,
+                entity=self.name,
+                attributes=self.attributes,
+                entity_data=self.entities
+            )
+            return updated_ratings
+        else:
+            print("Invalid input for updating ratings.")
+            return current_ratings
 
     @staticmethod
     def scale_rating(rating: Dict[str, float]) -> Dict[str, float]:
@@ -81,4 +98,3 @@ class Entity:
             # Scale the normalized rating to the range 0 to 10
             scaled_rating[key] = normalized_value * 10
         return scaled_rating
-
