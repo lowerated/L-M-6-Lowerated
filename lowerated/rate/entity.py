@@ -15,14 +15,13 @@ class Entity:
                 "Unique Concept",
                 "Emotions"
             ],
-            "weights": {
-                "Cinematography": 1,
-                "Direction": 1,
-                "Story": 1,
-                "Characters": 1,
-                "Production Design": 1,
-                "Unique Concept": 1,
-                "Emotions": 1
+            "weights":{'Cinematography': 0.14704225352112676,
+                        'Direction': 0.1447887323943662, 
+                        'Story': 0.1563380281690141, 
+                        'Characters': 0.1447887323943662, 
+                        'Production Design': 0.12929577464788733, 
+                        'Unique Concept': 0.13464788732394367, 
+                        'Emotions': 0.14309859154929577
             }
         }
     }

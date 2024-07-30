@@ -14,12 +14,6 @@ model.eval()
 # Define the label mapping
 label_columns = ['Cinematography', 'Direction', 'Story', 'Characters', 'Production Design', 'Unique Concept', 'Emotions']
 
-def scale_rating(value, min_rating=-1, max_rating=10):
-    """
-    Scale the rating to the range -100% to 100%
-    """
-    return ((value - min_rating) / (max_rating - min_rating)) * 200 - 100
-
 def get_weights(entity: str, entity_data: Dict) -> Dict[str, float]:
     """
     Returns weights for the given entity.
@@ -98,7 +92,6 @@ def compute_overall_rating(predictions: np.ndarray, weights: Dict[str, float]) -
     total_weight = sum(weights.values())
     return weighted_sum / total_weight
 
-# Implement get_rating function
 def get_rating(reviews: List[str], entity: str, attributes: List[str], entity_data: Dict) -> Dict[str, float]:
     """
     Returns the Probabilities of the Attributes in the Text
@@ -114,17 +107,31 @@ def get_rating(reviews: List[str], entity: str, attributes: List[str], entity_da
         LM6: Final Rating
     """
     try:
+        # Initialize probabilities dictionary with 0.0 for each attribute
         probabilities = {attribute: 0.0 for attribute in attributes}
-        count = 0
-
+        # Initialize counts for each attribute to keep track of valid values
+        counts = {attribute: 0 for attribute in attributes}
+        
         for review in reviews:
             sentiment_scores = predict_sentiment(review)
             for i, attribute in enumerate(attributes):
-                probabilities[attribute] = rolling_mean_update(probabilities[attribute], sentiment_scores[i], count)
-            count += 1
 
-        overall_rating = compute_overall_rating(np.array([probabilities[attr] for attr in attributes]), get_weights(entity, entity_data))
+                # removing neutral values (not talked about topics shouldn't effect the mean value)
+                if abs(sentiment_scores[i]) > 0.1:
+                    probabilities[attribute] = rolling_mean_update(probabilities[attribute], sentiment_scores[i], counts[attribute])
+                    counts[attribute] += 1
+        
+        # Compute overall rating using the weighted mean
+        overall_rating = compute_overall_rating(
+            np.array([probabilities[attr] for attr in attributes]), 
+            get_weights(entity, entity_data)
+        )
         probabilities['LM6'] = overall_rating
+        
+        # Ensure that any aspect without a rating is set to 0
+        for attribute in attributes:
+            if counts[attribute] == 0:
+                probabilities[attribute] = 0.0
 
         return probabilities
 

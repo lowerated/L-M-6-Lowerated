@@ -16,7 +16,7 @@ if __name__ == "__main__":
     entity = Entity(name="Movie")
 
     rating = entity.rate(reviews=some_movie_reviews)
-
+    print(rating)
     rating = entity.scale_rating(rating)
 
     print(rating)
