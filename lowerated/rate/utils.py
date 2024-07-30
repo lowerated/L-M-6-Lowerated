@@ -131,9 +131,3 @@ def get_rating(reviews: List[str], entity: str, attributes: List[str], entity_da
     except Exception as e:
         print(f"Error in getting probabilities: {e}")
         return {}
-
-def scale_rating(value, min_rating=-1, max_rating=10):
-    """
-    Scale the rating to the range -100% to 100%
-    """
-    return ((value - min_rating) / (max_rating - min_rating)) * 200 - 100

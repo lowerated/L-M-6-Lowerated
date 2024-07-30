@@ -3,10 +3,10 @@ from lowerated.rate.entity import Entity
 # Example usage
 if __name__ == "__main__":
     some_movie_reviews = [
-        "bad movie!", "worse than other movies.", "bad.",
+        "good movie!", "best than other movies.", "best.",
         "best movie", "very good movie", "the cinematography was insane",
         "story was so beautiful", "the emotional element was missing but cinematography was great",
-        "didn't feel a thing watching this",
+        "wow feel a thing watching this",
         "oooof, eliot and jessie were so good. the casting was the best",
         "yo who designed the set, that was really good",
         "such stories are rare to find"
@@ -18,5 +18,8 @@ if __name__ == "__main__":
     rating = entity.rate(reviews=some_movie_reviews)
 
     rating = entity.scale_rating(rating)
+
+    print(rating)
+
 
     print("LM6: ", rating["LM6"])

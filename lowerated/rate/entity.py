@@ -1,6 +1,5 @@
 import json
 from typing import Dict, List
-from lowerated.rate.utils import scale_rating as utils_scale_rating
 from lowerated.rate.utils import get_rating
 from lowerated.rate.reviews_extraction import read_reviews
 # Entity class definition
@@ -74,9 +73,13 @@ class Entity:
     @staticmethod
     def scale_rating(rating: Dict[str, float]) -> Dict[str, float]:
         """
-        Scale the ratings to the range -100% to 100%
+        Scale the ratings from the range -1 to 1 to the range 0 to 10.
         """
         scaled_rating = {}
         for key, value in rating.items():
-            scaled_rating[key] = utils_scale_rating(value, min_rating=-1, max_rating=10)
+            # Normalize the rating from -1 to 1 to the range 0 to 1
+            normalized_value = (value + 1) / 2
+            # Scale the normalized rating to the range 0 to 10
+            scaled_rating[key] = normalized_value * 10
         return scaled_rating
+
