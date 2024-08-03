@@ -6,3 +6,5 @@ transformers==4.43.1
 pyarrow==16.1.0
 datasets==2.20.0
 SentencePiece
+nltk
+tqdm
