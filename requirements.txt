@@ -8,3 +8,4 @@ datasets==2.20.0
 SentencePiece
 nltk
 tqdm
+beautifulsoup4

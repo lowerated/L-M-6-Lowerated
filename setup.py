@@ -13,13 +13,16 @@ setup(
     long_description_content_type='text/markdown',
     url='http://lowerated.com/products/',
     name='lowerated',
-    version='0.2.6',
+    version='0.2.7',
     packages=find_packages(),
     install_requires=[
         'numpy',
         'python-dotenv',
         'websockets',
-        'fastapi'
+        'fastapi',
+        'nltk',
+        'tqdm',
+        'beautifulsoup4'
     ],
     extras_require={
         'openai': ['openai'],
