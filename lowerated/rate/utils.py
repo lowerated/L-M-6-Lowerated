@@ -3,6 +3,7 @@ from transformers import DebertaV2ForSequenceClassification, DebertaV2Tokenizer
 import numpy as np
 from nltk.tokenize import sent_tokenize
 from typing import Dict, List
+from tqdm import tqdm
 
 # Load the fine-tuned model and tokenizer
 model = DebertaV2ForSequenceClassification.from_pretrained('lowerated/deberta-v3-lm6')
@@ -122,7 +123,7 @@ def get_rating(reviews: List[str], entity: str, attributes: List[str], entity_da
         # Initialize list to store sentiment scores for each attribute
         all_scores = {attribute: [] for attribute in attributes}
 
-        for review in reviews:
+        for review in tqdm(reviews):
             # Split review into sentences
             sentences = sent_tokenize(review)
             for sentence in sentences:

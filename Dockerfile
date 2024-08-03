@@ -11,4 +11,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Run the main.py file
+CMD ["python", "-c", "import nltk; nltk.download('punkt')"]
 CMD ["python", "main.py"]
