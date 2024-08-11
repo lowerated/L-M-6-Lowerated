@@ -17,7 +17,7 @@
 
 - Anything that can be rated.
 - Examples include films, cars, books, music, furniture, even your partner.
-- In case of Lowerated, we're dealing with "Movies".
+- In the case of Lowerated, we're dealing with "Movies".
 
 ### How Does It Work?
 
@@ -39,15 +39,11 @@ We gather reviews from multiple critics and users. Our AI extracts information f
 
 Each attribute is given a percentage value from 0-100%, reflecting its presence in the movie.
 
-We have identified key attributes for multiple entities, detailed in the listed in [entities & attributes](./docs/rate/entities_attributes.md)
-
-## Can we add more attributes?
-
-Yes, 7 is the standard for all the default entities given, you can create your own entities and assign them as many attributes you want.
+We have identified key attributes for multiple entities, detailed in the listed [Entities & Attributes](./docs/rate/entities_attributes.md).
 
 ## How do I use it?
 
-Check Out the steps to use Lowerated [here](./docs/rate/how_to_use.md)
+Check out the steps to use Lowerated [here](./docs/rate/how_to_use.md).
 
 ## Prerequisites
 
@@ -70,7 +66,7 @@ from lowerated.rate import Entity
 from lowerated.rate.utils import entities, find_attributes
 ```
 
-3. Define the `Entity` class with its methods.
+2. Define the `Entity` class with its methods.
 
 ## Usage
 
@@ -91,7 +87,7 @@ attributes = find_attributes(entity_name)
 print(attributes)
 ```
 
-### Initializing an Available Entity or Creating Custom Entity
+### Initializing an Available Entity or Creating a Custom Entity
 
 Create an instance of the `Entity` class by specifying the entity name and optionally its attributes:
 
@@ -131,7 +127,7 @@ rating = movie_entity.rate(download_link=download_link)
 print(rating)
 ```
 
-### Lisence
+### License
 
 [Apache 2.0](./LICENSE)
 
