@@ -19,7 +19,10 @@ setup(
         'numpy',
         'python-dotenv',
         'websockets',
-        'fastapi'
+        'fastapi',
+        'nltk',
+        'tqdm',
+        'beautifulsoup4'
     ],
     extras_require={
         'openai': ['openai'],
