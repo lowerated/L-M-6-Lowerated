@@ -6,7 +6,7 @@ if __name__ == "__main__":
         "the story was breathtakingly amazing."
     ]
     
-    new_review = "The story was amazing, but the cinematography could not have been better."
+    new_review = "The story was amazing, but the cinematography was best."
 
     # Create entity object (loads the whole pipeline)
     entity = Entity(name="Movie")

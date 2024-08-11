@@ -8,7 +8,7 @@ from tqdm import tqdm
 # Load models and tokenizer
 aspect_model = BertForTokenClassification.from_pretrained('Lowerated/lm6-movie-aspect-extraction-bert')
 aspect_tokenizer = BertTokenizer.from_pretrained('Lowerated/lm6-movie-aspect-extraction-bert')
-sentiment_classifier = pipeline("zero-shot-classification", model="MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli")
+sentiment_classifier = pipeline("zero-shot-classification", model="Lowerated/lm6-deberta-v3-topic-sentiment")
 
 # Define the label mapping
 label_columns = ['Cinematography', 'Direction', 'Story', 'Characters', 'Production Design', 'Unique Concept', 'Emotions']
@@ -27,7 +27,7 @@ def get_weights(entity: str, entity_data: Dict) -> Dict[str, float]:
     """
     return entity_data.get(entity, {}).get('weights', {label: 1 for label in label_columns})
 
-def rolling_mean_update(current_mean: float, new_value: float, count: int, threshold: float = 0.01) -> float:
+def rolling_mean_update(current_mean: float, new_value: float, count: int) -> float:
     """
     Description:
         Update the rolling mean with a new value, considering a threshold to ignore small changes.
@@ -41,7 +41,7 @@ def rolling_mean_update(current_mean: float, new_value: float, count: int, thres
     Return:
         float: The updated rolling mean.
     """
-    if abs(new_value - current_mean) < threshold:
+    if abs(new_value - current_mean) == 0:
         return current_mean
     return ((current_mean * count) + new_value) / (count + 1)
 
@@ -169,7 +169,6 @@ def get_rating(reviews: List[str], entity: str, attributes: List[str], entity_da
     try:
         all_scores = {attribute: [] for attribute in attributes}
 
-
         for review in tqdm(reviews):
             # Split review into sentences
             sentences = sent_tokenize(review)
@@ -197,7 +196,8 @@ def get_rating(reviews: List[str], entity: str, attributes: List[str], entity_da
 def update_rating_with_new_review(review: str, current_ratings: Dict[str, float], count: int, entity: str, attributes: List[str], entity_data: Dict) -> Dict[str, float]:
     """
     Description:
-        Update the current sentiment ratings with a new review using a rolling mean.
+        Update the current sentiment ratings with a new review. If the previous value for an aspect is zero,
+        it calculates a normal mean instead of using a rolling mean.
 
     Args:
         review (str): The new review text.
@@ -217,7 +217,12 @@ def update_rating_with_new_review(review: str, current_ratings: Dict[str, float]
                 snippets = predict_snippet(sentence, aspect)
                 for snippet in snippets:
                     score = get_sentiment_score(snippet, aspect)
-                    current_ratings[aspect] = rolling_mean_update(current_ratings[aspect], score, count)
+                    if current_ratings[aspect] == 0:
+                        # If the previous rating was zero, take the normal mean of the two values
+                        current_ratings[aspect] = score
+                    else:
+                        # Use rolling mean update if the previous rating is not zero
+                        current_ratings[aspect] = rolling_mean_update(current_ratings[aspect], score, count)
 
         overall_rating = compute_overall_rating(
             np.array([current_ratings[attr] for attr in attributes]), 
