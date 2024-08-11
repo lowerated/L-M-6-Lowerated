@@ -1,141 +1,184 @@
 import torch
-from transformers import DebertaV2ForSequenceClassification, DebertaV2Tokenizer
+from transformers import BertTokenizer, BertForTokenClassification, pipeline
 import numpy as np
 from nltk.tokenize import sent_tokenize
 from typing import Dict, List
 
-# Load the fine-tuned model and tokenizer
-model = DebertaV2ForSequenceClassification.from_pretrained('lowerated/deberta-v3-lm6')
-tokenizer = DebertaV2Tokenizer.from_pretrained('lowerated/deberta-v3-lm6')
-
-# Ensure the model is in evaluation mode
-model.eval()
+# Load models and tokenizer
+aspect_model = BertForTokenClassification.from_pretrained('Lowerated/lm6-movie-aspect-extraction-bert')
+aspect_tokenizer = BertTokenizer.from_pretrained('Lowerated/lm6-movie-aspect-extraction-bert')
+sentiment_classifier = pipeline("zero-shot-classification", model="MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli")
 
 # Define the label mapping
 label_columns = ['Cinematography', 'Direction', 'Story', 'Characters', 'Production Design', 'Unique Concept', 'Emotions']
 
 def get_weights(entity: str, entity_data: Dict) -> Dict[str, float]:
     """
-    Returns weights for the given entity.
+    Description:
+        Retrieve the weights for each attribute of the given entity.
 
     Args:
-        entity (str): Name of the entity
+        entity (str): The name of the entity (e.g., 'Movie').
+        entity_data (Dict): A dictionary containing entity information and their respective weights.
 
-    Returns:
-        Dict[str, float]: Weights for each attribute
+    Return:
+        Dict[str, float]: A dictionary of attribute weights for the entity.
     """
     return entity_data.get(entity, {}).get('weights', {label: 1 for label in label_columns})
 
-def rolling_mean_update(current_mean: float, new_value: float, count: int) -> float:
+def rolling_mean_update(current_mean: float, new_value: float, count: int, threshold: float = 0.01) -> float:
     """
-    Updates the rolling mean with a new value.
+    Description:
+        Update the rolling mean with a new value, considering a threshold to ignore small changes.
 
     Args:
-        current_mean (float): Current rolling mean
-        new_value: float: New value to incorporate
-        count: int: Number of reviews considered so far
+        current_mean (float): The current mean value.
+        new_value (float): The new value to incorporate into the rolling mean.
+        count (int): The number of data points considered so far.
+        threshold (float): The minimum change required to update the mean.
 
-    Returns:
-        float: Updated rolling mean
+    Return:
+        float: The updated rolling mean.
     """
+    if abs(new_value - current_mean) < threshold:
+        return current_mean
     return ((current_mean * count) + new_value) / (count + 1)
 
-# Function for predicting sentiment scores
-def predict_sentiment(review: str) -> np.ndarray:
+def predict_snippet(review: str, aspect: str) -> List[str]:
     """
-    Predicts sentiment scores for a given review.
+    Description:
+        Predict and extract snippets from a review that are relevant to a specific aspect.
 
     Args:
-        review (str): Review text
+        review (str): The text of the review.
+        aspect (str): The aspect (e.g., 'Story', 'Cinematography') for which snippets are being extracted.
 
-    Returns:
-        np.ndarray: Array of sentiment scores for each attribute
+    Return:
+        List[str]: A list of snippets relevant to the aspect.
     """
-    # Tokenize the input review
-    inputs = tokenizer(review, return_tensors='pt', truncation=True, padding=True, max_length=512)
-    
-    # Disable gradient calculations for inference
+    model = aspect_model
+    tokenizer = aspect_tokenizer
+    model.eval()
+
+    inputs = tokenizer.encode_plus(
+        review,
+        aspect,
+        add_special_tokens=False,
+        max_length=256,
+        padding='max_length',
+        return_attention_mask=True,
+        return_tensors='pt',
+        truncation='longest_first'
+    )
+    input_ids = inputs['input_ids']
+    attention_mask = inputs['attention_mask']
+
     with torch.no_grad():
-        # Get model outputs
-        outputs = model(**inputs)
-    
-    # Get the prediction logits
-    predictions = outputs.logits.squeeze().detach().numpy()
-    return predictions
+        outputs = model(input_ids=input_ids, attention_mask=attention_mask)
+        logits = outputs.logits
 
-# Function to print predictions with labels
-def print_predictions(review: str, predictions: np.ndarray):
+    predictions = torch.argmax(logits, dim=2).flatten().tolist()
+    new_predictions = predictions.copy()
+    tokens = tokenizer.convert_ids_to_tokens(input_ids.flatten().tolist())
+    
+    snippets = []
+    snippet = []
+    i = 0
+    for token, label in zip(tokens, predictions):
+        if label == 1:
+            new_predictions[i] = 1
+            snippet.append(token)
+        elif label == 0 and i > 0 and i + 1 < len(tokens) and predictions[i - 1] == 1 and predictions[i + 1] == 1:
+            new_predictions[i] = 1
+            snippet.append(token)
+        elif len(snippet):
+            snippets.append(' '.join(snippet))
+            snippet = []
+        i += 1
+
+    for i in range(1, len(new_predictions) - 2):
+        if new_predictions[i] == 0 and new_predictions[i+1] == 0 and new_predictions[i-1] == 1 and new_predictions[i+2] == 1:
+            new_predictions[i] = 1
+            new_predictions[i+1] = 1
+
+    return snippets
+
+def get_sentiment_score(snippet: str, aspect: str) -> float:
     """
-    Prints the predictions with labels.
+    Description:
+        Determine the sentiment score of a snippet for a specific aspect.
 
     Args:
-        review (str): Review text
-        predictions (np.ndarray): Predicted sentiment scores
-    """
-    print(f"Review: {review}")
-    for label, score in zip(label_columns, predictions):
-        print(f"{label}: {score:.2f}")
+        snippet (str): The text snippet related to an aspect.
+        aspect (str): The aspect being analyzed.
 
-# Function to compute the overall rating using weighted mean
+    Return:
+        float: The sentiment score scaled between 0 and 10.
+    """
+    positive_label = f"{aspect} positive"
+    negative_label = f"{aspect} negative"
+    sentiment_result = sentiment_classifier(snippet, [positive_label, negative_label])
+    positive_score = sentiment_result['scores'][0]
+    negative_score = sentiment_result['scores'][1]
+    scaled_score = ((positive_score - negative_score + 1) / 2) * 10  # Already scaled to 0-10
+
+    return scaled_score
+
 def compute_overall_rating(predictions: np.ndarray, weights: Dict[str, float]) -> float:
     """
-    Computes the overall rating using weighted mean, ignoring aspects with a value of 5.
+    Description:
+        Compute the overall rating for an entity by applying weights to the aspect predictions.
 
     Args:
-        predictions (np.ndarray): Predicted sentiment scores
-        weights (Dict[str, float]): Weights for each attribute
+        predictions (np.ndarray): Array of sentiment scores for each aspect.
+        weights (Dict[str, float]): A dictionary of weights for each aspect.
 
-    Returns:
-        float: Overall rating
+    Return:
+        float: The overall weighted rating.
     """
     filtered_predictions = []
     filtered_weights = []
 
     for i, pred in enumerate(predictions):
-        if pred != 5:  # Ignore aspects with a value of 5
+        if pred != 0:
             filtered_predictions.append(pred)
             filtered_weights.append(weights[label_columns[i]])
 
-    if not filtered_predictions:  # All aspects have a value of 5
-        return 5.0
+    if not filtered_predictions:
+        return 0.0
 
     weighted_sum = sum(pred * weight for pred, weight in zip(filtered_predictions, filtered_weights))
     total_weight = sum(filtered_weights)
     return weighted_sum / total_weight
 
-# Function to calculate normal mean for initial reviews
 def get_rating(reviews: List[str], entity: str, attributes: List[str], entity_data: Dict) -> Dict[str, float]:
     """
-    Returns the Probabilities of the Attributes in the Text
+    Description:
+        Calculate the sentiment ratings for a list of reviews and compute an overall rating.
 
     Args:
-        reviews: List of review texts
-        entity: Name of the entity
-        attributes: List of Attributes to rate
-        entity_data: all entities, their aspects and their weights
+        reviews (List[str]): A list of review texts.
+        entity (str): The name of the entity (e.g., 'Movie').
+        attributes (List[str]): A list of attributes/aspects to rate.
+        entity_data (Dict): A dictionary containing entity information and their respective weights.
 
     Return:
-        Dict: Probabilities of the Attributes {"attribute_1":0.3,"attribute_2":0.7} i.e Aspect-wise weighted mean.
-        LM6: Final Rating
+        Dict[str, float]: A dictionary of sentiment scores for each aspect, including the overall 'LM6' rating.
     """
     try:
-        # Initialize list to store sentiment scores for each attribute
         all_scores = {attribute: [] for attribute in attributes}
 
         for review in reviews:
-            # Split review into sentences
             sentences = sent_tokenize(review)
             for sentence in sentences:
-                sentiment_scores = predict_sentiment(sentence)
-                for i, attribute in enumerate(attributes):
-                    # removing neutral values (not talked about topics shouldn't affect the mean value)
-                    if abs(sentiment_scores[i]) > 0.2:
-                        all_scores[attribute].append(sentiment_scores[i])
+                for aspect in attributes:
+                    snippets = predict_snippet(sentence, aspect)
+                    for snippet in snippets:
+                        score = get_sentiment_score(snippet, aspect)
+                        all_scores[aspect].append(score)
 
-        # Calculate the mean score for each attribute
         probabilities = {attribute: np.mean(scores) if scores else 0.0 for attribute, scores in all_scores.items()}
 
-        # Compute overall rating using the weighted mean
         overall_rating = compute_overall_rating(
             np.array([probabilities[attr] for attr in attributes]), 
             get_weights(entity, entity_data)
@@ -148,32 +191,31 @@ def get_rating(reviews: List[str], entity: str, attributes: List[str], entity_da
         print(f"Error in getting probabilities: {e}")
         return {}
 
-# Function to update ratings with a new review using rolling mean
 def update_rating_with_new_review(review: str, current_ratings: Dict[str, float], count: int, entity: str, attributes: List[str], entity_data: Dict) -> Dict[str, float]:
     """
-    Updates the ratings with a new review using the rolling mean.
+    Description:
+        Update the current sentiment ratings with a new review using a rolling mean.
 
     Args:
-        review: str: New review text
-        current_ratings: Dict[str, float]: Current ratings for each attribute
-        count: int: Number of reviews considered so far
-        entity: str: Name of the entity
-        attributes: List[str]: List of Attributes to rate
-        entity_data: Dict: All entities, their aspects and their weights
+        review (str): The new review text.
+        current_ratings (Dict[str, float]): The current ratings for each attribute.
+        count (int): The number of reviews considered so far.
+        entity (str): The name of the entity (e.g., 'Movie').
+        attributes (List[str]): A list of attributes/aspects to rate.
+        entity_data (Dict): A dictionary containing entity information and their respective weights.
 
     Return:
-        Dict: Updated ratings for each attribute
+        Dict[str, float]: The updated ratings for each attribute, including the overall 'LM6' rating.
     """
     try:
-        # Split review into sentences
         sentences = sent_tokenize(review)
         for sentence in sentences:
-            sentiment_scores = predict_sentiment(sentence)
-            for i, attribute in enumerate(attributes):
-                if abs(sentiment_scores[i]) > 0.2:
-                    current_ratings[attribute] = rolling_mean_update(current_ratings[attribute], sentiment_scores[i], count)
+            for aspect in attributes:
+                snippets = predict_snippet(sentence, aspect)
+                for snippet in snippets:
+                    score = get_sentiment_score(snippet, aspect)
+                    current_ratings[aspect] = rolling_mean_update(current_ratings[aspect], score, count)
 
-        # Update overall rating using the weighted mean
         overall_rating = compute_overall_rating(
             np.array([current_ratings[attr] for attr in attributes]), 
             get_weights(entity, entity_data)

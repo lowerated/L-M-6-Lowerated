@@ -8,7 +8,9 @@ dist/
 build/
 .env
 train-test/deberta-v3-fine-tuned
+train-test/spans_based_bert_model
 train-test/logs
 train-test/results
 data/
 *.csv
+.dist/
