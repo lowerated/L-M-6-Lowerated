@@ -30,20 +30,21 @@ def get_weights(entity: str, entity_data: Dict) -> Dict[str, float]:
 def rolling_mean_update(current_mean: float, new_value: float, count: int) -> float:
     """
     Description:
-        Update the rolling mean with a new value, considering a threshold to ignore small changes.
+        Update the rolling mean with a new value.
 
     Args:
         current_mean (float): The current mean value.
         new_value (float): The new value to incorporate into the rolling mean.
         count (int): The number of data points considered so far.
-        threshold (float): The minimum change required to update the mean.
 
     Return:
         float: The updated rolling mean.
     """
     if abs(new_value - current_mean) == 0:
         return current_mean
-    return ((current_mean * count) + new_value) / (count + 1)
+    updated_mean = ((current_mean * count) + new_value) / (count + 1)
+    # Ensure the updated mean does not exceed 10
+    return max(0, min(10, updated_mean))
 
 def predict_snippet(review: str, aspect: str) -> List[str]:
     """
@@ -123,7 +124,8 @@ def get_sentiment_score(snippet: str, aspect: str) -> float:
     negative_score = sentiment_result['scores'][1]
     scaled_score = ((positive_score - negative_score + 1) / 2) * 10  # Already scaled to 0-10
 
-    return scaled_score
+    # Ensure the sentiment score does not exceed 10
+    return max(0, min(10, scaled_score))
 
 def compute_overall_rating(predictions: np.ndarray, weights: Dict[str, float]) -> float:
     """
@@ -150,7 +152,7 @@ def compute_overall_rating(predictions: np.ndarray, weights: Dict[str, float]) -
 
     weighted_sum = sum(pred * weight for pred, weight in zip(filtered_predictions, filtered_weights))
     total_weight = sum(filtered_weights)
-    return weighted_sum / total_weight
+    return max(0, min(10, weighted_sum / total_weight))  # Clamp the overall rating between 0 and 10
 
 def get_rating(reviews: List[str], entity: str, attributes: List[str], entity_data: Dict) -> Dict[str, float]:
     """
@@ -218,11 +220,14 @@ def update_rating_with_new_review(review: str, current_ratings: Dict[str, float]
                 for snippet in snippets:
                     score = get_sentiment_score(snippet, aspect)
                     if current_ratings[aspect] == 0:
-                        # If the previous rating was zero, take the normal mean of the two values
+                        # If the previous rating was zero, take the new score directly
                         current_ratings[aspect] = score
                     else:
                         # Use rolling mean update if the previous rating is not zero
                         current_ratings[aspect] = rolling_mean_update(current_ratings[aspect], score, count)
+                    
+                    # Ensure the updated rating does not exceed 10
+                    current_ratings[aspect] = max(0, min(10, current_ratings[aspect]))
 
         overall_rating = compute_overall_rating(
             np.array([current_ratings[attr] for attr in attributes]), 

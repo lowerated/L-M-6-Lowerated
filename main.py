@@ -3,7 +3,8 @@ from lowerated.rate.entity import Entity
 # Example usage
 if __name__ == "__main__":
     initial_reviews = [
-        "the story was breathtakingly amazing."
+        "this cinematography was amazing",
+        "The story was amazing, but the cinematography was best."
     ]
     
     new_review = "The story was amazing, but the cinematography was best."
