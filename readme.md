@@ -1,7 +1,7 @@
 # Lowerated's Rating Algorithm
 
 <p align="center">
-    <img src="./media/logos/main-logo-black-background.jpeg" alt="Logo" width="200">
+    <img src="./media/logos/main-logo-black-background.jpeg" href="https://lowerated.com" alt="Logo" width="200">
 </p>
 
 <h3 align="center">
