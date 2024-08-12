@@ -7,8 +7,8 @@
 <h3 align="center">
     <strong>The Best Way to Rate & Recommend Movies</strong>
 </h3>
-
-<a href="https://huggingface.co/Lowerated/lm6-movie-aspect-extraction-bert"
+<div align="center">
+<a  href="https://huggingface.co/Lowerated/lm6-movie-aspect-extraction-bert"
     ><img
       src="https://img.shields.io/badge/HuggingFace-Models-blue?logo=huggingface&style=flat-square"
       alt="Lowerated Models"
@@ -29,6 +29,7 @@
       src="https://img.shields.io/youtube/views/PLK1glKdPynXxjvHrSJQiT46k1rdsFWwJf?label=YouTube%20Views&style=social"
       alt="YouTube Playlist"
   /></a>
+</div>
 <br />
 <br />
 
