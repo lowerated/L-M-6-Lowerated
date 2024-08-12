@@ -8,6 +8,30 @@
     <strong>The Best Way to Rate & Recommend Movies</strong>
 </h3>
 
+<a href="https://huggingface.co/Lowerated/lm6-movie-aspect-extraction-bert"
+    ><img
+      src="https://img.shields.io/badge/HuggingFace-Models-blue?logo=huggingface&style=flat-square"
+      alt="Lowerated Models"
+  /></a>
+<a href="https://huggingface.co/Lowerated/lm6-deberta-v3-topic-sentiment"
+    ><img
+      src="https://img.shields.io/badge/DeBERTa-v3-blue?logo=huggingface&style=flat-square"
+      alt="LM6 DeBERTa"
+  /></a>
+<a href="https://huggingface.co/datasets/Lowerated/lm6-movies-reviews-aspects"
+    ><img
+      src="https://img.shields.io/badge/HuggingFace-Datasets-blue?logo=huggingface&style=flat-square"
+      alt="Lowerated Data"
+  /></a>
+<a
+    href="https://www.youtube.com/playlist?list=PLK1glKdPynXxjvHrSJQiT46k1rdsFWwJf"
+    ><img
+      src="https://img.shields.io/youtube/views/PLK1glKdPynXxjvHrSJQiT46k1rdsFWwJf?label=YouTube%20Views&style=social"
+      alt="YouTube Playlist"
+  /></a>
+<br />
+<br />
+
 - An algorithm that provides accurate ratings for any entity.
 - Uses diverse sources: reviews, links, documents, and other resources.
 - Completely unbiased.
