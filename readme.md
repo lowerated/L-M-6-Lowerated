@@ -8,10 +8,10 @@
     <strong>The Best Way to Rate & Recommend Movies</strong>
 </h3>
 <div align="center">
-<a  href="https://huggingface.co/Lowerated/lm6-movie-aspect-extraction-bert"
+<a  href="https://huggingface.co/spaces/Lowerated/lm6-movie-rating"
     ><img
       src="https://img.shields.io/badge/HuggingFace-Models-blue?logo=huggingface&style=flat-square"
-      alt="Lowerated Models"
+      alt="USE IT HERE"
   /></a>
 <a href="https://huggingface.co/Lowerated/lm6-deberta-v3-topic-sentiment"
     ><img
