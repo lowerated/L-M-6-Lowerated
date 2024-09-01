@@ -507,7 +507,7 @@ def get_audience_reviews_rotten_tomatoes(
     urls: Optional[List[str]] = None,
     name: Optional[str] = None,
     driver_path: Optional[str] = None,
-    review_limit: Optional[int] = None
+    limit: Optional[int] = None
 ) -> List[Dict[str, Any]]:
     """
     Description:
@@ -517,7 +517,7 @@ def get_audience_reviews_rotten_tomatoes(
         urls: Optional[List[str]] - List of URLs to scrape reviews from.
         name: Optional[str] - Movie name to search and scrape reviews for.
         driver_path: Optional[str] - Path to the ChromeDriver executable. If None, the system's default driver will be used.
-        review_limit: Optional[int] - Maximum number of reviews to scrape. If None, all available reviews will be collected.
+        limit: Optional[int] - Maximum number of reviews to scrape. If None, all available reviews will be collected.
 
     Returns:
         List[Dict[str, Any]] - A list of dictionaries containing the movie title and a list of audience reviews.
@@ -603,7 +603,7 @@ def get_audience_reviews_rotten_tomatoes(
             time.sleep(1)
 
             current_reviews = []
-            reviews_to_collect = min(total_reviews - 1, review_limit) if review_limit else total_reviews - 1
+            reviews_to_collect = min(total_reviews - 1, limit) if limit else total_reviews - 1
         
             # Iterate through the number of reviews
             for review_num in range(1, reviews_to_collect + 1):
@@ -660,7 +660,7 @@ def get_critics_reviews_rotten_tomatoes(
     urls: Optional[List[str]] = None,
     name: Optional[str] = None,
     driver_path: Optional[str] = None,
-    review_limit: Optional[int] = None
+    limit: Optional[int] = None
 ) -> List[Dict[str, Any]]:
     """
     Description:
@@ -670,7 +670,7 @@ def get_critics_reviews_rotten_tomatoes(
         urls: Optional[List[str]] - List of URLs to scrape reviews from.
         name: Optional[str] - Movie name to search and scrape reviews for.
         driver_path: Optional[str] - Path to the ChromeDriver executable. If None, the system's default driver will be used.
-        review_limit: Optional[int] - Maximum number of reviews to scrape. If None, all available reviews will be collected.
+        limit: Optional[int] - Maximum number of reviews to scrape. If None, all available reviews will be collected.
 
     Returns:
         List[Dict[str, Any]] - A list of dictionaries containing the movie title and a list of critic reviews.
@@ -758,7 +758,7 @@ def get_critics_reviews_rotten_tomatoes(
                         time.sleep(3)
 
                         current_reviews = []
-                        num_reviews = min(num_reviews, review_limit) if review_limit else num_reviews
+                        num_reviews = min(num_reviews, limit) if limit else num_reviews
 
                         # Iterate through the number of reviews
                         for review_num in range(1, num_reviews + 1):
@@ -786,7 +786,7 @@ def get_critics_reviews_rotten_tomatoes(
                             
                             current_reviews.append(current_review)
                             
-                            if len(current_reviews) >= review_limit:
+                            if len(current_reviews) >= limit:
                                 break
 
                         current_movie = {

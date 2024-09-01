@@ -130,7 +130,7 @@ class Entity:
         return rotten_tomatoes_ratings(urls=urls, name=name, config=config, driver_path=driver_path)
 
 
-    def get_audience_reviews_rotten_tomatoes(self, urls: Optional[List[str]] = None, name: Optional[str] = None, driver_path: Optional[str] = None, review_limit: Optional[int] = None):
+    def get_audience_reviews_rotten_tomatoes(self, urls: Optional[List[str]] = None, name: Optional[str] = None, driver_path: Optional[str] = None, limit: Optional[int] = None):
         """
         Description:
             Scrapes audience reviews from Rotten Tomatoes based on provided URLs or by searching for a movie name.
@@ -144,9 +144,9 @@ class Entity:
         Returns:
             List[Dict[str, Any]] - A list of dictionaries containing the movie title and a list of audience reviews.
         """
-        return audience_reviews_rotten_tomatoes(urls=urls, name=name, driver_path=driver_path, review_limit=review_limit)
+        return audience_reviews_rotten_tomatoes(urls=urls, name=name, driver_path=driver_path, limit=limit)
 
-    def get_critics_reviews_rotten_tomatoes(self, urls: Optional[List[str]] = None, name: Optional[str] = None, driver_path: Optional[str] = None, review_limit: Optional[int] = None):
+    def get_critics_reviews_rotten_tomatoes(self, urls: Optional[List[str]] = None, name: Optional[str] = None, driver_path: Optional[str] = None, limit: Optional[int] = None):
         """
         Description:
             Scrapes critic reviews from Rotten Tomatoes based on provided URLs or by searching for a movie name.
@@ -160,9 +160,9 @@ class Entity:
         Returns:
             List[Dict[str, Any]] - A list of dictionaries containing the movie title and a list of critic reviews.
         """
-        return critics_reviews_rotten_tomatoes(urls=urls, name=name, driver_path=driver_path, review_limit=review_limit)
+        return critics_reviews_rotten_tomatoes(urls=urls, name=name, driver_path=driver_path, limit=limit)
 
-    def get_imdb_reviews(self, imdb_urls: Optional[List[str]] = None, driver_path: Optional[str] = None, num_reviews: int = 10):
+    def get_imdb_reviews(self, imdb_urls: Optional[List[str]] = None, driver_path: Optional[str] = None, limit: int = 10):
         """
         Description:
             Scrape IMDb user reviews by searching for the movie by providing its name or a list of URLS.
@@ -176,7 +176,7 @@ class Entity:
         Returns:
             list - A list of dictionaries containing the movie titles and their IMDb user reviews.
         """
-        return imdb_reviews(name=self.name, urls=imdb_urls, driver_path=driver_path, num_reviews=num_reviews)
+        return imdb_reviews(name=self.name, urls=imdb_urls, driver_path=driver_path, limit=limit)
 
     @staticmethod
     def get_entities() -> List[str]:
