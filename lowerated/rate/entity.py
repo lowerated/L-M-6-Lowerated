@@ -97,7 +97,7 @@ class Entity:
         return Entity.entities.get(self.name, {}).get('weights', {label: 1 for label in self.attributes})
     
 
-    def get_imdb_rating(self, urls: List[str], driver_path: Optional[str] = None):
+    def get_imdb_rating(self,name: Optional[str] = None, urls: Optional[List[str]] = None, driver_path: Optional[str] = None):
         """
         Description:
             Scrapes IMDb ratings for specified movies either by using IMDb search results or by scraping directly from the provided IMDb movie URLs.
@@ -110,7 +110,7 @@ class Entity:
         Returns:
             list - A list of dictionaries containing the movie titles and their IMDb ratings (out of 10). If no match is found, "Not Found" is returned for the movie.
         """
-        return imdb_ratings(name=self.name, urls=urls, driver_path=driver_path)
+        return imdb_ratings(name=name, urls=urls, driver_path=driver_path)
     
 
     def get_rotten_tomatoes_ratings(self, urls: Optional[List[str]] = None, name: Optional[str] = None, config: Optional[Dict[str, Dict[str, Any]]] = None, driver_path: Optional[str] = None):
@@ -162,7 +162,7 @@ class Entity:
         """
         return critics_reviews_rotten_tomatoes(urls=urls, name=name, driver_path=driver_path, limit=limit)
 
-    def get_imdb_reviews(self, imdb_urls: Optional[List[str]] = None, driver_path: Optional[str] = None, limit: int = 10):
+    def get_imdb_reviews(self,name: Optional[str] = None, urls: Optional[List[str]] = None, driver_path: Optional[str] = None, limit: int = 10):
         """
         Description:
             Scrape IMDb user reviews by searching for the movie by providing its name or a list of URLS.
@@ -176,7 +176,7 @@ class Entity:
         Returns:
             list - A list of dictionaries containing the movie titles and their IMDb user reviews.
         """
-        return imdb_reviews(name=self.name, urls=imdb_urls, driver_path=driver_path, limit=limit)
+        return imdb_reviews(name=name, urls=urls, driver_path=driver_path, limit=limit)
 
     @staticmethod
     def get_entities() -> List[str]:

@@ -822,7 +822,7 @@ def get_critics_reviews_rotten_tomatoes(
 def get_imdb_reviews(name: str = None, urls: list = None, driver_path: str = None, limit: int = 10) -> list:
     """
     Description:
-        Scrape IMDb user reviews by searching for the movie by providing its name or a list of URLS.
+        Scrape IMDb user reviews by searching for the movie by providing its name or a list of URLs.
 
     Args:
         name: str - The name of the movie to search for on IMDb. Ignored if imdb_urls are provided.
@@ -930,14 +930,28 @@ def get_imdb_reviews(name: str = None, urls: list = None, driver_path: str = Non
             # Scrape the movie title
             movie_title = driver.find_element(By.CSS_SELECTOR, 'h1').text
             
-            # Scroll to the "User reviews" button
-            user_reviews_button = driver.find_element(By.CSS_SELECTOR, "a[href*='reviews?ref_=tt_urv']")
-            driver.execute_script("arguments[0].scrollIntoView(true);", user_reviews_button)
-            time.sleep(2)
+
+            # Correct XPath for the "User Reviews" button based on the image
+            correct_button_xpath = '//*[@data-testid="UserReviews"]//a[contains(@href, "/reviews/")]'
+
             
-            # Click the "User reviews" button
-            user_reviews_button.click()
+            # Wait for the correct button to be present in the DOM
+            correct_button = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, correct_button_xpath))
+            )
+            
+            # Scroll down to the correct button
+            driver.execute_script("arguments[0].scrollIntoView(true);", correct_button)
+            
+            # Wait until the correct button is clickable
+            WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.XPATH, correct_button_xpath))
+            )
+            
+            # Click the correct button
+            correct_button.click()
             time.sleep(3)
+            print("Button clicked successfully.")
 
             # Extract reviews and load more if needed
             reviews = extract_reviews(limit)
@@ -953,5 +967,17 @@ def get_imdb_reviews(name: str = None, urls: list = None, driver_path: str = Non
         driver.quit()
         return []
 
+    # Close the driver
     driver.quit()
+
+    # Print the results in a nicely formatted manner
+    print(f"\n{'='*80}")
+    print(f"Movie: {results[0]['Movie Title'] if results else 'No Reviews Found'}")
+    print(f"Total Reviews Scraped: {min(len(results), 5)}")
+    print(f"{'='*80}")
+    
+    # Only print the first 5 reviews
+    for i, result in enumerate(results[:5], start=1):
+        print(f"Review {i}:\n{result['Review']}\n{'-'*80}")
+
     return results
