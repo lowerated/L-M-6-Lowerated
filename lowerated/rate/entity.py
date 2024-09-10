@@ -1,6 +1,13 @@
 import json
-from typing import Dict, List
-from lowerated.rate.utils import get_rating, update_rating_with_new_review
+from typing import Dict, List, Optional, Any
+from lowerated.rate.utils import (
+    get_rating, update_rating_with_new_review,
+    get_imdb_ratings as imdb_ratings,
+    get_rotten_tomatoes_ratings as rotten_tomatoes_ratings,
+    get_imdb_reviews as imdb_reviews,
+    get_audience_reviews_rotten_tomatoes as audience_reviews_rotten_tomatoes,
+    get_critics_reviews_rotten_tomatoes as critics_reviews_rotten_tomatoes
+)
 from lowerated.rate.reviews_extraction import read_reviews
 
 class Entity:
@@ -88,6 +95,88 @@ class Entity:
             Dict[str, float]: A dictionary mapping attribute names to their weights.
         """
         return Entity.entities.get(self.name, {}).get('weights', {label: 1 for label in self.attributes})
+    
+
+    def get_imdb_rating(self,name: Optional[str] = None, urls: Optional[List[str]] = None, driver_path: Optional[str] = None):
+        """
+        Description:
+            Scrapes IMDb ratings for specified movies either by using IMDb search results or by scraping directly from the provided IMDb movie URLs.
+
+        Args:
+            movie_name: Optional[str] - The name of the movie to search for on IMDb (only if URLs are not provided).
+            movie_urls: Optional[list] - List of IMDb movie URLs to scrape ratings from directly.
+            driver_path: Optional[str] - Path to the ChromeDriver executable. If None, the system's default driver will be used.
+
+        Returns:
+            list - A list of dictionaries containing the movie titles and their IMDb ratings (out of 10). If no match is found, "Not Found" is returned for the movie.
+        """
+        return imdb_ratings(name=name, urls=urls, driver_path=driver_path)
+    
+
+    def get_rotten_tomatoes_ratings(self, urls: Optional[List[str]] = None, name: Optional[str] = None, config: Optional[Dict[str, Dict[str, Any]]] = None, driver_path: Optional[str] = None):
+        """
+        Description:
+            Scrapes movie ratings from Rotten Tomatoes based on provided URLs or by searching for a movie name.
+
+        Args:
+            urls: Optional[List[str]] - List of URLs to scrape ratings from.
+            name: Optional[str] - Movie name to search and scrape ratings for.
+            config: Optional[Dict[str, Dict[str, Any]]] - Optional configuration for scraping elements.
+            driver_path: Optional[str] - Path to the ChromeDriver executable. If None, the system's default driver will be used.
+
+        Returns:
+            List[Dict[str, Any]] - A list of dictionaries containing the movie title, critics score (out of 10), and audience score (out of 10).
+        """
+        return rotten_tomatoes_ratings(urls=urls, name=name, config=config, driver_path=driver_path)
+
+
+    def get_audience_reviews_rotten_tomatoes(self, urls: Optional[List[str]] = None, name: Optional[str] = None, driver_path: Optional[str] = None, limit: Optional[int] = None):
+        """
+        Description:
+            Scrapes audience reviews from Rotten Tomatoes based on provided URLs or by searching for a movie name.
+
+        Args:
+            urls: Optional[List[str]] - List of URLs to scrape reviews from.
+            name: Optional[str] - Movie name to search and scrape reviews for.
+            driver_path: Optional[str] - Path to the ChromeDriver executable. If None, the system's default driver will be used.
+            review_limit: Optional[int] - Maximum number of reviews to scrape. If None, all available reviews will be collected.
+
+        Returns:
+            List[Dict[str, Any]] - A list of dictionaries containing the movie title and a list of audience reviews.
+        """
+        return audience_reviews_rotten_tomatoes(urls=urls, name=name, driver_path=driver_path, limit=limit)
+
+    def get_critics_reviews_rotten_tomatoes(self, urls: Optional[List[str]] = None, name: Optional[str] = None, driver_path: Optional[str] = None, limit: Optional[int] = None):
+        """
+        Description:
+            Scrapes critic reviews from Rotten Tomatoes based on provided URLs or by searching for a movie name.
+
+        Args:
+            urls: Optional[List[str]] - List of URLs to scrape reviews from.
+            name: Optional[str] - Movie name to search and scrape reviews for.
+            driver_path: Optional[str] - Path to the ChromeDriver executable. If None, the system's default driver will be used.
+            review_limit: Optional[int] - Maximum number of reviews to scrape. If None, all available reviews will be collected.
+
+        Returns:
+            List[Dict[str, Any]] - A list of dictionaries containing the movie title and a list of critic reviews.
+        """
+        return critics_reviews_rotten_tomatoes(urls=urls, name=name, driver_path=driver_path, limit=limit)
+
+    def get_imdb_reviews(self,name: Optional[str] = None, urls: Optional[List[str]] = None, driver_path: Optional[str] = None, limit: int = 10):
+        """
+        Description:
+            Scrape IMDb user reviews by searching for the movie by providing its name or a list of URLS.
+
+        Args:
+            name: str - The name of the movie to search for on IMDb. Ignored if imdb_urls are provided.
+            urls: list - A list of IMDb URLs to the movie's reviews page. Overrides movie_name if provided.
+            driver_path: str - Path to the ChromeDriver executable. If None, the system's default driver will be used.
+            num_reviews: int - The number of reviews to scrape from each URL or search result. Default is 10.
+
+        Returns:
+            list - A list of dictionaries containing the movie titles and their IMDb user reviews.
+        """
+        return imdb_reviews(name=name, urls=urls, driver_path=driver_path, limit=limit)
 
     @staticmethod
     def get_entities() -> List[str]:
