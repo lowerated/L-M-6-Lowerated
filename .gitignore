@@ -9,6 +9,7 @@ build/
 .env
 train-test/deberta-v3-fine-tuned
 train-test/spans_based_bert_model
+train-test/review_spans_extraction
 train-test/logs
 train-test/results
 data/

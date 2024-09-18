@@ -1,7 +1,8 @@
 import json
 from typing import Dict, List, Optional, Any
 from lowerated.rate.utils import (
-    get_rating, update_rating_with_new_review,
+    get_rating, update_rating_with_new_review)
+from lowerated.rate.reviews_extraction import (
     get_imdb_ratings as imdb_ratings,
     get_rotten_tomatoes_ratings as rotten_tomatoes_ratings,
     get_imdb_reviews as imdb_reviews,

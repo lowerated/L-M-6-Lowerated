@@ -9,3 +9,4 @@ SentencePiece
 nltk
 tqdm
 beautifulsoup4
+fuzzywuzzy
